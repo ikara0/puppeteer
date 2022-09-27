@@ -1,6 +1,6 @@
 export declare function GetNews(url: string): Promise<{
     General: {
-        head: string;
+        pair: string;
         lang: string;
         news: any;
     };

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetNews = void 0;
 const ppt = require("puppeteer");
 async function GetNews(url) {
+    console.log('Veriler Yükleniyor');
     try {
         const browser = await ppt.launch();
         const page = await browser.newPage();
@@ -10,13 +11,13 @@ async function GetNews(url) {
             waitUntil: 'networkidle2',
         });
         const value = await page.evaluate(async () => {
-            let head;
+            let pair;
             let newsTitles = [];
             let newsContent = [];
             let newsSumImgSrc = [];
             let lang;
             let totalNewsLink = [];
-            head = $('.instrumentHead h1').first().text();
+            pair = $('.instrumentHead h1').first().text();
             lang = document.documentElement.lang;
             const detail = $('.mediumTitle1 .articleItem')
                 .map(async (i, el) => {
@@ -32,23 +33,24 @@ async function GetNews(url) {
             for (let i = 0; i < newsTitles.length; i++) {
                 let obj = {
                     title: '',
-                    summary: '',
+                    spot: '',
                     sumImgSrc: '',
                     totalNewsLink: '',
                 };
                 obj.title = newsTitles[i] ? newsTitles[i] : 'NULL';
-                obj.summary = newsContent[i];
+                obj.spot = newsContent[i];
                 obj.sumImgSrc = newsSumImgSrc[i];
                 obj.totalNewsLink = totalNewsLink[i];
                 news.push(obj);
             }
             const finalObject = {
-                head: head,
+                pair: pair,
                 lang: lang,
                 news: news,
             };
             return finalObject;
         });
+        console.log('Raw summary yüklendi');
         const { news } = value;
         const summNews = [];
         for (let i = 0; i < news.length; i++) {
@@ -70,6 +72,7 @@ async function GetNews(url) {
             });
             summNews.push(total);
         }
+        console.log('Total News Created');
         const lastObject = {
             General: value,
             TotalNews: summNews,

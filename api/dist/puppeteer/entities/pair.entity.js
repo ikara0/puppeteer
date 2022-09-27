@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pair = void 0;
 const typeorm_1 = require("typeorm");
-const lookup_entity_1 = require("./lookup.entity");
+const lookup_entinty_1 = require("./lookup.entinty");
 let Pair = class Pair {
 };
 __decorate([
@@ -21,17 +21,13 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Pair.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
 ], Pair.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => lookup_entity_1.Lookup, (lookup) => lookup.pair),
+    (0, typeorm_1.OneToMany)(() => lookup_entinty_1.Lookup, (lookup) => lookup.pair),
     __metadata("design:type", Array)
 ], Pair.prototype, "lookup", void 0);
 Pair = __decorate([
-    (0, typeorm_1.Entity)('pair', { schema: 'investingV2' })
+    (0, typeorm_1.Entity)('pair', { schema: 'newsDb' })
 ], Pair);
 exports.Pair = Pair;
 //# sourceMappingURL=pair.entity.js.map

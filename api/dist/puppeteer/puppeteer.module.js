@@ -12,18 +12,14 @@ const puppeteer_service_1 = require("./puppeteer.service");
 const puppeteer_controller_1 = require("./puppeteer.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const pair_entity_1 = require("./entities/pair.entity");
-const pivot_points_entity_1 = require("./entities/pivot-points.entity");
-const lookup_entity_1 = require("./entities/lookup.entity");
-const tech_indicator_entity_1 = require("./entities/tech-indicator.entity");
+const lookup_entinty_1 = require("./entities/lookup.entinty");
 let PuppeteerModule = class PuppeteerModule {
 };
 PuppeteerModule = __decorate([
     (0, common_1.Module)({
         providers: [puppeteer_service_1.PuppeteerService],
         controllers: [puppeteer_controller_1.PuppeteerController],
-        imports: [
-            typeorm_1.TypeOrmModule.forFeature([pair_entity_1.Pair, pivot_points_entity_1.PivotPoint, lookup_entity_1.Lookup, tech_indicator_entity_1.TechnicalIndicator]),
-        ],
+        imports: [typeorm_1.TypeOrmModule.forFeature([pair_entity_1.Pair, lookup_entinty_1.Lookup])],
     })
 ], PuppeteerModule);
 exports.PuppeteerModule = PuppeteerModule;

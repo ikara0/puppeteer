@@ -1,7 +1,6 @@
-import { Lookup } from './lookup.entity';
+import { Lookup } from './lookup.entinty';
 export declare class Pair {
     id: string;
-    name: string;
     description: string;
     lookup: Lookup[];
 }

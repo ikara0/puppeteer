@@ -1,7 +1,7 @@
-import { isNotEmpty } from 'class-validator';
 import * as ppt from 'puppeteer';
 
 export async function GetNews(url: string) {
+  console.log('Veriler Yükleniyor');
   try {
     const browser = await ppt.launch();
     const page = await browser.newPage();
@@ -10,14 +10,14 @@ export async function GetNews(url: string) {
     });
 
     const value = await page.evaluate(async () => {
-      let head: string;
+      let pair: string;
       let newsTitles: string[] = [];
       let newsContent: string[] = [];
       let newsSumImgSrc: any = [];
       let lang: string;
       let totalNewsLink: string[] = [];
 
-      head = $('.instrumentHead h1').first().text();
+      pair = $('.instrumentHead h1').first().text();
 
       lang = document.documentElement.lang;
 
@@ -38,25 +38,25 @@ export async function GetNews(url: string) {
       for (let i = 0; i < newsTitles.length; i++) {
         let obj: any = {
           title: '',
-          summary: '',
+          spot: '',
           sumImgSrc: '',
           totalNewsLink: '',
         };
         obj.title = newsTitles[i] ? newsTitles[i] : 'NULL';
-        obj.summary = newsContent[i];
+        obj.spot = newsContent[i];
         obj.sumImgSrc = newsSumImgSrc[i];
         obj.totalNewsLink = totalNewsLink[i];
         news.push(obj);
       }
 
       const finalObject = {
-        head: head,
+        pair: pair,
         lang: lang,
         news: news,
       };
       return finalObject;
     });
-
+    console.log('Raw summary yüklendi');
     const { news } = value;
     const summNews: any = [];
     for (let i = 0; i < news.length; i++) {
@@ -78,6 +78,7 @@ export async function GetNews(url: string) {
       });
       summNews.push(total);
     }
+    console.log('Total News Created');
 
     const lastObject = {
       General: value,

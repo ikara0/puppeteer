@@ -9,33 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TechnicalIndicator = void 0;
+exports.Lookup = void 0;
 const typeorm_1 = require("typeorm");
-const lookup_entity_1 = require("./lookup.entity");
-let TechnicalIndicator = class TechnicalIndicator {
+const pair_entity_1 = require("./pair.entity");
+let Lookup = class Lookup {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], TechnicalIndicator.prototype, "id", void 0);
+], Lookup.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => pair_entity_1.Pair, (pair) => pair.lookup),
+    __metadata("design:type", pair_entity_1.Pair)
+], Lookup.prototype, "pair", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], TechnicalIndicator.prototype, "name", void 0);
+], Lookup.prototype, "lang", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
     __metadata("design:type", String)
-], TechnicalIndicator.prototype, "value", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], TechnicalIndicator.prototype, "action", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => lookup_entity_1.Lookup, (lookup) => lookup.technical),
-    __metadata("design:type", lookup_entity_1.Lookup)
-], TechnicalIndicator.prototype, "lookup", void 0);
-TechnicalIndicator = __decorate([
-    (0, typeorm_1.Entity)('technicalIndicator', { schema: 'investingV2' })
-], TechnicalIndicator);
-exports.TechnicalIndicator = TechnicalIndicator;
-//# sourceMappingURL=tech-indicator.entity.js.map
+], Lookup.prototype, "createdAt", void 0);
+Lookup = __decorate([
+    (0, typeorm_1.Entity)('lookup', { schema: 'newsDb' })
+], Lookup);
+exports.Lookup = Lookup;
+//# sourceMappingURL=lookup.entinty.js.map

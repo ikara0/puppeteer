@@ -1,13 +1,10 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Lookup } from './lookup.entity';
+import { Lookup } from './lookup.entinty';
 
-@Entity('pair', { schema: 'investingV2' })
+@Entity('pair', { schema: 'newsDb' })
 export class Pair {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column()
-  name: string;
 
   @Column()
   description: string;
