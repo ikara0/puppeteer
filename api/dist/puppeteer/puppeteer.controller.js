@@ -19,20 +19,30 @@ let PuppeteerController = class PuppeteerController {
     constructor(pptService) {
         this.pptService = pptService;
     }
+    createTrNewsForApple(apple) {
+        return this.pptService.createTrNewsForApple(apple);
+    }
     getNewsByAlias(alias, lang) {
         return this.pptService.getNewsByAlias(alias, lang);
     }
     createEnNewsForDowJones(dow) {
         return this.pptService.createEnNewsForDow(dow);
     }
-    createTrNewsForDowJones(dow) {
-        return this.pptService.createTrNewsForDow(dow);
+    createTrNewsForDowJones(indice, lang) {
+        return this.pptService.createTrNewsForDow(indice, lang);
     }
 };
 __decorate([
+    (0, common_1.Post)('/news/:lang'),
+    __param(0, (0, common_1.Query)('apple')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PuppeteerController.prototype, "createTrNewsForApple", null);
+__decorate([
     (0, common_1.Get)('/news/:alias'),
     __param(0, (0, common_1.Param)('alias')),
-    __param(1, (0, common_1.Body)('lang')),
+    __param(1, (0, common_1.Query)('lang')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
@@ -45,10 +55,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PuppeteerController.prototype, "createEnNewsForDowJones", null);
 __decorate([
-    (0, common_1.Post)('/tr/news/:dow'),
-    __param(0, (0, common_1.Param)('dow')),
+    (0, common_1.Post)('/news/:lang'),
+    __param(0, (0, common_1.Query)('indice')),
+    __param(1, (0, common_1.Param)('lang')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], PuppeteerController.prototype, "createTrNewsForDowJones", null);
 PuppeteerController = __decorate([

@@ -242,11 +242,11 @@ export class PuppeteerService {
     }
   }
 
-  async createTrNewsForDow(dow: string) {
+  async createTrNewsForDow(indice: string, lang: string) {
     const result = await GetNews(BaseUrls.DowJonseTr);
     // return result;
     try {
-      const exist = await this.indiceRepo.findOne({ where: { alias: dow } });
+      const exist = await this.indiceRepo.findOne({ where: { alias: indice } });
       if (exist) {
         const lookup = new Lookup();
         lookup.language = result.Lang;

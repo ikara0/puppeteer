@@ -11,5 +11,5 @@ export declare class PuppeteerService {
     createTrNewsForApple(apple: string): Promise<boolean>;
     getNewsByAlias(alias: string, lang: string): Promise<any>;
     createEnNewsForDow(dow: string): Promise<boolean>;
-    createTrNewsForDow(dow: string): Promise<boolean>;
+    createTrNewsForDow(indice: string, lang: string): Promise<boolean>;
 }

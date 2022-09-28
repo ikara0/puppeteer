@@ -227,10 +227,10 @@ let PuppeteerService = class PuppeteerService {
             return false;
         }
     }
-    async createTrNewsForDow(dow) {
+    async createTrNewsForDow(indice, lang) {
         const result = await (0, getNews_1.GetNews)(baseUrls_contants_1.BaseUrls.DowJonseTr);
         try {
-            const exist = await this.indiceRepo.findOne({ where: { alias: dow } });
+            const exist = await this.indiceRepo.findOne({ where: { alias: indice } });
             if (exist) {
                 const lookup = new lookup_entinty_1.Lookup();
                 lookup.language = result.Lang;

@@ -1,22 +1,17 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { PuppeteerService } from './puppeteer.service';
 
 @Controller('puppeteer')
 export class PuppeteerController {
   constructor(private pptService: PuppeteerService) {}
 
-  // @Post('en/news/:apple')
-  // createEnNewsForApple(@Param('apple') apple: string) {
-  //   return this.pptService.createEnNewsForApple(apple);
-  // }
-
-  // @Post('/tr/news/:apple')
-  // createTrNewsForApple(@Param('apple') apple: string) {
-  //   return this.pptService.createTrNewsForApple(apple);
-  // }
+  @Post('/news/:lang')
+  createTrNewsForApple(@Query('apple') apple: string) {
+    return this.pptService.createTrNewsForApple(apple);
+  }
 
   @Get('/news/:alias')
-  getNewsByAlias(@Param('alias') alias: string, @Body('lang') lang: string) {
+  getNewsByAlias(@Param('alias') alias: string, @Query('lang') lang: string) {
     return this.pptService.getNewsByAlias(alias, lang);
   }
 
@@ -25,8 +20,11 @@ export class PuppeteerController {
     return this.pptService.createEnNewsForDow(dow);
   }
 
-  @Post('/tr/news/:dow')
-  createTrNewsForDowJones(@Param('dow') dow: string) {
-    return this.pptService.createTrNewsForDow(dow);
+  @Post('/news/:lang')
+  createTrNewsForDowJones(
+    @Query('indice') indice: string,
+    @Param('lang') lang: string,
+  ) {
+    return this.pptService.createTrNewsForDow(indice, lang);
   }
 }
