@@ -1,17 +1,27 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Pair } from './pair.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Indice } from './indice.entity';
+import { News } from './news.entity';
 
 @Entity('lookup', { schema: 'newsDb' })
 export class Lookup {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Pair, (pair) => pair.lookup)
-  pair: Pair;
-
   @Column()
-  lang: string;
+  language: string;
 
   @Column({ type: 'timestamptz', nullable: true })
-  createdAt: string;
+  timeStamp: Date;
+
+  @ManyToOne(() => Indice, (indice) => indice.lookup)
+  indice: Indice;
+
+  @OneToMany(() => News, (news) => news.lookup)
+  news: News[];
 }

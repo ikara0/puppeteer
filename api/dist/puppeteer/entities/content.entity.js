@@ -9,34 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Lookup = void 0;
+exports.Content = void 0;
 const typeorm_1 = require("typeorm");
-const indice_entity_1 = require("./indice.entity");
-const news_entity_1 = require("./news.entity");
-let Lookup = class Lookup {
+const summary_entity_1 = require("./summary.entity");
+let Content = class Content {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], Lookup.prototype, "id", void 0);
+], Content.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Lookup.prototype, "language", void 0);
+], Content.prototype, "context", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
-    __metadata("design:type", Date)
-], Lookup.prototype, "timeStamp", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Content.prototype, "index", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => indice_entity_1.Indice, (indice) => indice.lookup),
-    __metadata("design:type", indice_entity_1.Indice)
-], Lookup.prototype, "indice", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => news_entity_1.News, (news) => news.lookup),
-    __metadata("design:type", Array)
-], Lookup.prototype, "news", void 0);
-Lookup = __decorate([
-    (0, typeorm_1.Entity)('lookup', { schema: 'newsDb' })
-], Lookup);
-exports.Lookup = Lookup;
-//# sourceMappingURL=lookup.entinty.js.map
+    (0, typeorm_1.ManyToOne)(() => summary_entity_1.Summary, (summary) => summary.content),
+    __metadata("design:type", summary_entity_1.Summary)
+], Content.prototype, "summary", void 0);
+Content = __decorate([
+    (0, typeorm_1.Entity)('content', { schema: 'newsDb' })
+], Content);
+exports.Content = Content;
+//# sourceMappingURL=content.entity.js.map

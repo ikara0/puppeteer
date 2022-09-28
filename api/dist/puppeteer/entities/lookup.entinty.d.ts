@@ -1,7 +1,9 @@
-import { Pair } from './pair.entity';
+import { Indice } from './indice.entity';
+import { News } from './news.entity';
 export declare class Lookup {
     id: string;
-    pair: Pair;
-    lang: string;
-    createdAt: string;
+    language: string;
+    timeStamp: Date;
+    indice: Indice;
+    news: News[];
 }

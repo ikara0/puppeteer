@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { PuppeteerService } from './puppeteer.service';
 import { PuppeteerController } from './puppeteer.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Pair } from './entities/pair.entity';
+import { Indice } from './entities/indice.entity';
 import { Lookup } from './entities/lookup.entinty';
+import { News } from './entities/news.entity';
 
 @Module({
   providers: [PuppeteerService],
   controllers: [PuppeteerController],
-  imports: [TypeOrmModule.forFeature([Pair, Lookup])],
+  imports: [TypeOrmModule.forFeature([Indice, Lookup, News])],
 })
 export class PuppeteerModule {}

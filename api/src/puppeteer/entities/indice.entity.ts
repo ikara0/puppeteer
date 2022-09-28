@@ -1,14 +1,17 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Lookup } from './lookup.entinty';
 
-@Entity('pair', { schema: 'newsDb' })
-export class Pair {
+@Entity('indice', { schema: 'newsDb' })
+export class Indice {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  description: string;
+  name: string;
 
-  @OneToMany(() => Lookup, (lookup) => lookup.pair)
+  @Column({ nullable: true })
+  alias?: string;
+
+  @OneToMany(() => Lookup, (lookup) => lookup.indice)
   lookup: Lookup[];
 }

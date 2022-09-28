@@ -11,15 +11,16 @@ const common_1 = require("@nestjs/common");
 const puppeteer_service_1 = require("./puppeteer.service");
 const puppeteer_controller_1 = require("./puppeteer.controller");
 const typeorm_1 = require("@nestjs/typeorm");
-const pair_entity_1 = require("./entities/pair.entity");
+const indice_entity_1 = require("./entities/indice.entity");
 const lookup_entinty_1 = require("./entities/lookup.entinty");
+const news_entity_1 = require("./entities/news.entity");
 let PuppeteerModule = class PuppeteerModule {
 };
 PuppeteerModule = __decorate([
     (0, common_1.Module)({
         providers: [puppeteer_service_1.PuppeteerService],
         controllers: [puppeteer_controller_1.PuppeteerController],
-        imports: [typeorm_1.TypeOrmModule.forFeature([pair_entity_1.Pair, lookup_entinty_1.Lookup])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([indice_entity_1.Indice, lookup_entinty_1.Lookup, news_entity_1.News])],
     })
 ], PuppeteerModule);
 exports.PuppeteerModule = PuppeteerModule;

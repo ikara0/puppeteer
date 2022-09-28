@@ -9,34 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Lookup = void 0;
+exports.Summary = void 0;
 const typeorm_1 = require("typeorm");
-const indice_entity_1 = require("./indice.entity");
-const news_entity_1 = require("./news.entity");
-let Lookup = class Lookup {
+const content_entity_1 = require("./content.entity");
+const lookup_entinty_1 = require("./lookup.entinty");
+let Summary = class Summary {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], Lookup.prototype, "id", void 0);
+], Summary.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Lookup.prototype, "language", void 0);
+], Summary.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
-    __metadata("design:type", Date)
-], Lookup.prototype, "timeStamp", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Summary.prototype, "spot", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => indice_entity_1.Indice, (indice) => indice.lookup),
-    __metadata("design:type", indice_entity_1.Indice)
-], Lookup.prototype, "indice", void 0);
+    (0, typeorm_1.ManyToOne)(() => lookup_entinty_1.Lookup, (lookup) => lookup.summary),
+    __metadata("design:type", lookup_entinty_1.Lookup)
+], Summary.prototype, "lookup", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => news_entity_1.News, (news) => news.lookup),
+    (0, typeorm_1.OneToMany)(() => content_entity_1.Content, (content) => content.summary),
     __metadata("design:type", Array)
-], Lookup.prototype, "news", void 0);
-Lookup = __decorate([
-    (0, typeorm_1.Entity)('lookup', { schema: 'newsDb' })
-], Lookup);
-exports.Lookup = Lookup;
-//# sourceMappingURL=lookup.entinty.js.map
+], Summary.prototype, "content", void 0);
+Summary = __decorate([
+    (0, typeorm_1.Entity)('summary', { schema: 'newsDb' })
+], Summary);
+exports.Summary = Summary;
+//# sourceMappingURL=summary.entity.js.map

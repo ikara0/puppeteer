@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PuppeteerController = void 0;
 const common_1 = require("@nestjs/common");
@@ -16,16 +19,38 @@ let PuppeteerController = class PuppeteerController {
     constructor(pptService) {
         this.pptService = pptService;
     }
-    getNewsRaw() {
-        return this.pptService.getRawNewsAppl();
+    getNewsByAlias(alias, lang) {
+        return this.pptService.getNewsByAlias(alias, lang);
+    }
+    createEnNewsForDowJones(dow) {
+        return this.pptService.createEnNewsForDow(dow);
+    }
+    createTrNewsForDowJones(dow) {
+        return this.pptService.createTrNewsForDow(dow);
     }
 };
 __decorate([
-    (0, common_1.Get)('news/applEn'),
+    (0, common_1.Get)('/news/:alias'),
+    __param(0, (0, common_1.Param)('alias')),
+    __param(1, (0, common_1.Body)('lang')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
-], PuppeteerController.prototype, "getNewsRaw", null);
+], PuppeteerController.prototype, "getNewsByAlias", null);
+__decorate([
+    (0, common_1.Post)('/en/news/:dow'),
+    __param(0, (0, common_1.Param)('dow')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PuppeteerController.prototype, "createEnNewsForDowJones", null);
+__decorate([
+    (0, common_1.Post)('/tr/news/:dow'),
+    __param(0, (0, common_1.Param)('dow')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PuppeteerController.prototype, "createTrNewsForDowJones", null);
 PuppeteerController = __decorate([
     (0, common_1.Controller)('puppeteer'),
     __metadata("design:paramtypes", [puppeteer_service_1.PuppeteerService])

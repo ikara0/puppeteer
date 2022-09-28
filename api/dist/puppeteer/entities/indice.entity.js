@@ -9,34 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Lookup = void 0;
+exports.Indice = void 0;
 const typeorm_1 = require("typeorm");
-const indice_entity_1 = require("./indice.entity");
-const news_entity_1 = require("./news.entity");
-let Lookup = class Lookup {
+const lookup_entinty_1 = require("./lookup.entinty");
+let Indice = class Indice {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], Lookup.prototype, "id", void 0);
+], Indice.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Lookup.prototype, "language", void 0);
+], Indice.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
-    __metadata("design:type", Date)
-], Lookup.prototype, "timeStamp", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Indice.prototype, "alias", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => indice_entity_1.Indice, (indice) => indice.lookup),
-    __metadata("design:type", indice_entity_1.Indice)
-], Lookup.prototype, "indice", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => news_entity_1.News, (news) => news.lookup),
+    (0, typeorm_1.OneToMany)(() => lookup_entinty_1.Lookup, (lookup) => lookup.indice),
     __metadata("design:type", Array)
-], Lookup.prototype, "news", void 0);
-Lookup = __decorate([
-    (0, typeorm_1.Entity)('lookup', { schema: 'newsDb' })
-], Lookup);
-exports.Lookup = Lookup;
-//# sourceMappingURL=lookup.entinty.js.map
+], Indice.prototype, "lookup", void 0);
+Indice = __decorate([
+    (0, typeorm_1.Entity)('indice', { schema: 'newsDb' })
+], Indice);
+exports.Indice = Indice;
+//# sourceMappingURL=indice.entity.js.map

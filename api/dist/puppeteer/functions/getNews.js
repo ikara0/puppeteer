@@ -11,21 +11,23 @@ async function GetNews(url) {
             waitUntil: 'networkidle2',
         });
         const value = await page.evaluate(async () => {
-            let pair;
+            let head;
             let newsTitles = [];
             let newsContent = [];
             let newsSumImgSrc = [];
             let lang;
             let totalNewsLink = [];
-            pair = $('.instrumentHead h1').first().text();
+            head = $('.instrumentHead h1').first().text();
             lang = document.documentElement.lang;
             const detail = $('.mediumTitle1 .articleItem')
                 .map(async (i, el) => {
-                if (i > 2 && el.children[1].children[2].innerText !== '') {
-                    newsSumImgSrc.push(`${i}-${el.children[0].children[0].src}`);
-                    newsContent.push(el.children[1].children[2].innerText);
-                    newsTitles.push(el.children[1].children[0].innerText);
-                    totalNewsLink.push(el.children[1].children[0].href);
+                if (el.children[1].children[0].href.includes('investing.com')) {
+                    if (i > 2 && el.children[1].children[2].innerText !== '') {
+                        newsSumImgSrc.push(`${i}-${el.children[0].children[0].src}`);
+                        newsContent.push(el.children[1].children[2].innerText.replace('Investing.com', ' '));
+                        newsTitles.push(el.children[1].children[0].innerText);
+                        totalNewsLink.push(el.children[1].children[0].href);
+                    }
                 }
             })
                 .get();
@@ -36,15 +38,17 @@ async function GetNews(url) {
                     spot: '',
                     sumImgSrc: '',
                     totalNewsLink: '',
+                    order: '',
                 };
                 obj.title = newsTitles[i] ? newsTitles[i] : 'NULL';
                 obj.spot = newsContent[i];
                 obj.sumImgSrc = newsSumImgSrc[i];
                 obj.totalNewsLink = totalNewsLink[i];
+                obj.order = i;
                 news.push(obj);
             }
             const finalObject = {
-                pair: pair,
+                head: head.replace('\t', ''),
                 lang: lang,
                 news: news,
             };
@@ -65,7 +69,7 @@ async function GetNews(url) {
                     if (el.innerText === 'Pozisyon başarıyla eklendi: \n') {
                         return;
                     }
-                    totalParag.push(el.innerText);
+                    totalParag.push(el.innerText.replace('Investing.com', ' '));
                 })
                     .get();
                 return totalParag;
@@ -73,10 +77,19 @@ async function GetNews(url) {
             summNews.push(total);
         }
         console.log('Total News Created');
+        const result = [];
+        for (let i = 0; i < news.length; i++) {
+            let obj = {};
+            obj.news = news[i];
+            obj.news.context = summNews[i];
+            result.push(obj);
+        }
         const lastObject = {
-            General: value,
-            TotalNews: summNews,
+            IndiceName: value.head,
+            Lang: value.lang,
+            TotalNews: result,
         };
+        console.log('Completed');
         return lastObject;
     }
     catch (error) {
