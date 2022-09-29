@@ -15,6 +15,9 @@ export class News {
   @Column('simple-array')
   content?: string[];
 
+  @Column({ nullable: true })
+  sumImgURL: string;
+
   @Column()
   order?: number;
 

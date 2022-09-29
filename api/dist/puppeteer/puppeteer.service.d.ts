@@ -7,9 +7,8 @@ export declare class PuppeteerService {
     private indiceRepo;
     private newsRepo;
     constructor(lookupRepo: Repository<Lookup>, indiceRepo: Repository<Indice>, newsRepo: Repository<News>);
-    createEnNewsForApple(apple: string): Promise<boolean>;
-    createTrNewsForApple(apple: string): Promise<boolean>;
+    createNewsByAliasAndLang(alias: string, lang: string): Promise<boolean>;
     getNewsByAlias(alias: string, lang: string): Promise<any>;
-    createEnNewsForDow(dow: string): Promise<boolean>;
-    createTrNewsForDow(indice: string, lang: string): Promise<boolean>;
+    setUrl: (alias: string, lang: string) => string;
+    base: (url: string) => Promise<string>;
 }

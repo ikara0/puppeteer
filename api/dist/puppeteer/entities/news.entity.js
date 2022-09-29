@@ -31,6 +31,10 @@ __decorate([
     __metadata("design:type", Array)
 ], News.prototype, "content", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], News.prototype, "sumImgURL", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], News.prototype, "order", void 0);

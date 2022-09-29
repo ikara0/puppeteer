@@ -25,7 +25,7 @@ export async function GetNews(url: string) {
         .map(async (i: number, el: any) => {
           if (el.children[1].children[0].href.includes('investing.com')) {
             if (i > 2 && el.children[1].children[2].innerText !== '') {
-              newsSumImgSrc.push(`${i}-${el.children[0].children[0].src}`); // e.children[0].children[0].src
+              newsSumImgSrc.push(el.children[0].childNodes[0].dataset.src); // e.children[0].children[0].src
               newsContent.push(
                 el.children[1].children[2].innerText.replace(
                   'Investing.com',
@@ -69,7 +69,7 @@ export async function GetNews(url: string) {
     const { news } = value;
     const summNews: any = [];
     for (let i = 0; i < news.length; i++) {
-      await page.goto(news[i].totalNewsLink, { waitUntil: 'networkidle0' });
+      await page.goto(news[i].totalNewsLink, { waitUntil: 'networkidle2' });
       const total = await page.evaluate(async () => {
         let totalParag = [];
         const detail = $('.WYSIWYG.articlePage p, .WYSIWYG.articlePage li')

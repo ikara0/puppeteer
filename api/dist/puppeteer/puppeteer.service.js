@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PuppeteerService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const axios_1 = require("axios");
 const typeorm_2 = require("typeorm");
 const baseUrls_contants_1 = require("./constants/baseUrls.contants");
 const indice_entity_1 = require("./entities/indice.entity");
@@ -26,11 +27,40 @@ let PuppeteerService = class PuppeteerService {
         this.lookupRepo = lookupRepo;
         this.indiceRepo = indiceRepo;
         this.newsRepo = newsRepo;
+        this.setUrl = (alias, lang) => {
+            let url = '';
+            switch (alias) {
+                case 'apple':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.ApplEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.ApplTr;
+                    break;
+                case 'dow':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.DowJonesEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.DowJonseTr;
+                    break;
+                default:
+                    url = baseUrls_contants_1.BaseUrls.ApplEn;
+                    break;
+            }
+            return url;
+        };
+        this.base = async (url) => {
+            const image = await axios_1.default.get(url, { responseType: 'arraybuffer' });
+            const last = Buffer.from(image.data).toString('base64');
+            return last;
+        };
     }
-    async createEnNewsForApple(apple) {
-        const result = await (0, getNews_1.GetNews)(baseUrls_contants_1.BaseUrls.ApplEn);
+    async createNewsByAliasAndLang(alias, lang) {
+        const url = this.setUrl(alias, lang);
+        const result = await (0, getNews_1.GetNews)(url);
         try {
-            const exist = await this.indiceRepo.findOne({ where: { alias: apple } });
+            const exist = await this.indiceRepo.findOne({ where: { alias: alias } });
             if (exist) {
                 const lookup = new lookup_entinty_1.Lookup();
                 lookup.language = result.Lang;
@@ -41,6 +71,8 @@ let PuppeteerService = class PuppeteerService {
                 console.log('lookup kaydedildi');
                 for (const item of result.TotalNews) {
                     const news = new news_entity_1.News();
+                    let lastImg = await this.base(item.news.sumImgSrc);
+                    news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
                     news.lookup = lookupResult;
                     news.title = item.news.title;
                     news.spot = item.news.spot;
@@ -52,10 +84,10 @@ let PuppeteerService = class PuppeteerService {
                 }
                 return true;
             }
-            const alias = result.IndiceName.split(' ')[0];
+            const newsAlias = result.IndiceName.split(' ')[0];
             const index = new indice_entity_1.Indice();
             index.name = result.IndiceName;
-            index.alias = alias.toLocaleLowerCase();
+            index.alias = newsAlias.toLocaleLowerCase();
             const indexResult = this.indiceRepo.create(index);
             await this.indiceRepo.save(indexResult);
             console.log('index kaydedildi');
@@ -68,63 +100,8 @@ let PuppeteerService = class PuppeteerService {
             console.log('lookup kaydedildi');
             for (const item of result.TotalNews) {
                 const news = new news_entity_1.News();
-                news.lookup = lookupResult;
-                news.title = item.news.title;
-                news.spot = item.news.spot;
-                news.content = item.news.context;
-                news.order = item.news.order;
-                const newsResult = this.newsRepo.create(news);
-                await this.newsRepo.save(newsResult);
-                console.log('news Kaydedildi');
-            }
-            return true;
-        }
-        catch (error) {
-            console.log(error);
-            return false;
-        }
-    }
-    async createTrNewsForApple(apple) {
-        const result = await (0, getNews_1.GetNews)(baseUrls_contants_1.BaseUrls.ApplTr);
-        try {
-            const exist = await this.indiceRepo.findOne({ where: { alias: apple } });
-            if (exist) {
-                const lookup = new lookup_entinty_1.Lookup();
-                lookup.language = result.Lang;
-                lookup.indice = exist;
-                lookup.timeStamp = new Date();
-                const lookupResult = this.lookupRepo.create(lookup);
-                await this.lookupRepo.save(lookupResult);
-                console.log('lookup kaydedildi');
-                for (const item of result.TotalNews) {
-                    const news = new news_entity_1.News();
-                    news.lookup = lookupResult;
-                    news.title = item.news.title;
-                    news.spot = item.news.spot;
-                    news.content = item.news.context;
-                    news.order = item.news.order;
-                    const newsResult = this.newsRepo.create(news);
-                    await this.newsRepo.save(newsResult);
-                    console.log('news Kaydedildi');
-                }
-                return true;
-            }
-            const alias = result.IndiceName.split(' ')[0];
-            const index = new indice_entity_1.Indice();
-            index.name = result.IndiceName;
-            index.alias = alias.toLocaleLowerCase();
-            const indexResult = this.indiceRepo.create(index);
-            await this.indiceRepo.save(indexResult);
-            console.log('index kaydedildi');
-            const lookup = new lookup_entinty_1.Lookup();
-            lookup.language = result.Lang;
-            lookup.indice = indexResult;
-            lookup.timeStamp = new Date();
-            const lookupResult = this.lookupRepo.create(lookup);
-            await this.lookupRepo.save(lookupResult);
-            console.log('lookup kaydedildi');
-            for (const item of result.TotalNews) {
-                const news = new news_entity_1.News();
+                let lastImg = await this.base(item.news.sumImgSrc);
+                news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
                 news.lookup = lookupResult;
                 news.title = item.news.title;
                 news.spot = item.news.spot;
@@ -169,120 +146,6 @@ let PuppeteerService = class PuppeteerService {
             news: news,
         };
         return result;
-    }
-    async createEnNewsForDow(dow) {
-        const result = await (0, getNews_1.GetNews)(baseUrls_contants_1.BaseUrls.DowJonesEn);
-        try {
-            const exist = await this.indiceRepo.findOne({ where: { alias: dow } });
-            if (exist) {
-                const lookup = new lookup_entinty_1.Lookup();
-                lookup.language = result.Lang;
-                lookup.indice = exist;
-                lookup.timeStamp = new Date();
-                const lookupResult = this.lookupRepo.create(lookup);
-                await this.lookupRepo.save(lookupResult);
-                console.log('lookup kaydedildi');
-                for (const item of result.TotalNews) {
-                    const news = new news_entity_1.News();
-                    news.lookup = lookupResult;
-                    news.title = item.news.title;
-                    news.spot = item.news.spot;
-                    news.content = item.news.context;
-                    news.order = item.news.order;
-                    const newsResult = this.newsRepo.create(news);
-                    await this.newsRepo.save(newsResult);
-                    console.log('news Kaydedildi');
-                }
-                return true;
-            }
-            const alias = result.IndiceName.split(' ')[0];
-            const index = new indice_entity_1.Indice();
-            index.name = result.IndiceName;
-            index.alias = alias.toLocaleLowerCase();
-            const indexResult = this.indiceRepo.create(index);
-            await this.indiceRepo.save(indexResult);
-            console.log('index kaydedildi');
-            const lookup = new lookup_entinty_1.Lookup();
-            lookup.language = result.Lang;
-            lookup.indice = indexResult;
-            lookup.timeStamp = new Date();
-            const lookupResult = this.lookupRepo.create(lookup);
-            await this.lookupRepo.save(lookupResult);
-            console.log('lookup kaydedildi');
-            for (const item of result.TotalNews) {
-                const news = new news_entity_1.News();
-                news.lookup = lookupResult;
-                news.title = item.news.title;
-                news.spot = item.news.spot;
-                news.content = item.news.context;
-                news.order = item.news.order;
-                const newsResult = this.newsRepo.create(news);
-                await this.newsRepo.save(newsResult);
-                console.log('news Kaydedildi');
-            }
-            return true;
-        }
-        catch (error) {
-            console.log(error);
-            return false;
-        }
-    }
-    async createTrNewsForDow(indice, lang) {
-        const result = await (0, getNews_1.GetNews)(baseUrls_contants_1.BaseUrls.DowJonseTr);
-        try {
-            const exist = await this.indiceRepo.findOne({ where: { alias: indice } });
-            if (exist) {
-                const lookup = new lookup_entinty_1.Lookup();
-                lookup.language = result.Lang;
-                lookup.indice = exist;
-                lookup.timeStamp = new Date();
-                const lookupResult = this.lookupRepo.create(lookup);
-                await this.lookupRepo.save(lookupResult);
-                console.log('lookup kaydedildi');
-                for (const item of result.TotalNews) {
-                    const news = new news_entity_1.News();
-                    news.lookup = lookupResult;
-                    news.title = item.news.title;
-                    news.spot = item.news.spot;
-                    news.content = item.news.context;
-                    news.order = item.news.order;
-                    const newsResult = this.newsRepo.create(news);
-                    await this.newsRepo.save(newsResult);
-                    console.log('news Kaydedildi');
-                }
-                return true;
-            }
-            const alias = result.IndiceName.split(' ')[0];
-            const index = new indice_entity_1.Indice();
-            index.name = result.IndiceName;
-            index.alias = alias.toLocaleLowerCase();
-            const indexResult = this.indiceRepo.create(index);
-            await this.indiceRepo.save(indexResult);
-            console.log('index kaydedildi');
-            const lookup = new lookup_entinty_1.Lookup();
-            lookup.language = result.Lang;
-            lookup.indice = indexResult;
-            lookup.timeStamp = new Date();
-            const lookupResult = this.lookupRepo.create(lookup);
-            await this.lookupRepo.save(lookupResult);
-            console.log('lookup kaydedildi');
-            for (const item of result.TotalNews) {
-                const news = new news_entity_1.News();
-                news.lookup = lookupResult;
-                news.title = item.news.title;
-                news.spot = item.news.spot;
-                news.content = item.news.context;
-                news.order = item.news.order;
-                const newsResult = this.newsRepo.create(news);
-                await this.newsRepo.save(newsResult);
-                console.log('news Kaydedildi');
-            }
-            return true;
-        }
-        catch (error) {
-            console.log(error);
-            return false;
-        }
     }
 };
 PuppeteerService = __decorate([

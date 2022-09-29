@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import axios from 'axios';
 import { Repository } from 'typeorm';
 import { BaseUrls } from './constants/baseUrls.contants';
 import { Indice } from './entities/indice.entity';
@@ -16,11 +17,14 @@ export class PuppeteerService {
     @InjectRepository(News) private newsRepo: Repository<News>,
   ) {}
 
-  async createEnNewsForApple(apple: string) {
-    const result = await GetNews(BaseUrls.ApplEn);
+  async createNewsByAliasAndLang(alias: string, lang: string) {
+    const url = this.setUrl(alias, lang);
+
+    const result = await GetNews(url);
     // return result;
+
     try {
-      const exist = await this.indiceRepo.findOne({ where: { alias: apple } });
+      const exist = await this.indiceRepo.findOne({ where: { alias: alias } });
       if (exist) {
         const lookup = new Lookup();
         lookup.language = result.Lang;
@@ -32,6 +36,8 @@ export class PuppeteerService {
 
         for (const item of result.TotalNews) {
           const news = new News();
+          let lastImg = await this.base(item.news.sumImgSrc);
+          news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
           news.lookup = lookupResult;
           news.title = item.news.title;
           news.spot = item.news.spot;
@@ -44,10 +50,10 @@ export class PuppeteerService {
         }
         return true;
       }
-      const alias: string = result.IndiceName.split(' ')[0];
+      const newsAlias: string = result.IndiceName.split(' ')[0];
       const index = new Indice();
       index.name = result.IndiceName;
-      index.alias = alias.toLocaleLowerCase();
+      index.alias = newsAlias.toLocaleLowerCase();
       const indexResult = this.indiceRepo.create(index);
       await this.indiceRepo.save(indexResult);
       console.log('index kaydedildi');
@@ -62,70 +68,8 @@ export class PuppeteerService {
 
       for (const item of result.TotalNews) {
         const news = new News();
-        news.lookup = lookupResult;
-        news.title = item.news.title;
-        news.spot = item.news.spot;
-        news.content = item.news.context;
-        news.order = item.news.order;
-
-        const newsResult = this.newsRepo.create(news);
-        await this.newsRepo.save(newsResult);
-        console.log('news Kaydedildi');
-      }
-
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-
-  async createTrNewsForApple(apple: string) {
-    const result = await GetNews(BaseUrls.ApplTr);
-    // return result;
-    try {
-      const exist = await this.indiceRepo.findOne({ where: { alias: apple } });
-      if (exist) {
-        const lookup = new Lookup();
-        lookup.language = result.Lang;
-        lookup.indice = exist;
-        lookup.timeStamp = new Date();
-        const lookupResult = this.lookupRepo.create(lookup);
-        await this.lookupRepo.save(lookupResult);
-        console.log('lookup kaydedildi');
-
-        for (const item of result.TotalNews) {
-          const news = new News();
-          news.lookup = lookupResult;
-          news.title = item.news.title;
-          news.spot = item.news.spot;
-          news.content = item.news.context;
-          news.order = item.news.order;
-
-          const newsResult = this.newsRepo.create(news);
-          await this.newsRepo.save(newsResult);
-          console.log('news Kaydedildi');
-        }
-        return true;
-      }
-      const alias: string = result.IndiceName.split(' ')[0];
-      const index = new Indice();
-      index.name = result.IndiceName;
-      index.alias = alias.toLocaleLowerCase();
-      const indexResult = this.indiceRepo.create(index);
-      await this.indiceRepo.save(indexResult);
-      console.log('index kaydedildi');
-
-      const lookup = new Lookup();
-      lookup.language = result.Lang;
-      lookup.indice = indexResult;
-      lookup.timeStamp = new Date();
-      const lookupResult = this.lookupRepo.create(lookup);
-      await this.lookupRepo.save(lookupResult);
-      console.log('lookup kaydedildi');
-
-      for (const item of result.TotalNews) {
-        const news = new News();
+        let lastImg = await this.base(item.news.sumImgSrc);
+        news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
         news.lookup = lookupResult;
         news.title = item.news.title;
         news.spot = item.news.spot;
@@ -178,131 +122,33 @@ export class PuppeteerService {
     return result;
   }
 
-  async createEnNewsForDow(dow: string) {
-    const result = await GetNews(BaseUrls.DowJonesEn);
-    // return result;
-    try {
-      const exist = await this.indiceRepo.findOne({ where: { alias: dow } });
-      if (exist) {
-        const lookup = new Lookup();
-        lookup.language = result.Lang;
-        lookup.indice = exist;
-        lookup.timeStamp = new Date();
-        const lookupResult = this.lookupRepo.create(lookup);
-        await this.lookupRepo.save(lookupResult);
-        console.log('lookup kaydedildi');
-
-        for (const item of result.TotalNews) {
-          const news = new News();
-          news.lookup = lookupResult;
-          news.title = item.news.title;
-          news.spot = item.news.spot;
-          news.content = item.news.context;
-          news.order = item.news.order;
-
-          const newsResult = this.newsRepo.create(news);
-          await this.newsRepo.save(newsResult);
-          console.log('news Kaydedildi');
+  setUrl = (alias: string, lang: string) => {
+    let url = '';
+    switch (alias) {
+      case 'apple':
+        if (lang === 'en') {
+          url = BaseUrls.ApplEn;
+          break;
         }
-        return true;
-      }
-      const alias: string = result.IndiceName.split(' ')[0];
-      const index = new Indice();
-      index.name = result.IndiceName;
-      index.alias = alias.toLocaleLowerCase();
-      const indexResult = this.indiceRepo.create(index);
-      await this.indiceRepo.save(indexResult);
-      console.log('index kaydedildi');
-
-      const lookup = new Lookup();
-      lookup.language = result.Lang;
-      lookup.indice = indexResult;
-      lookup.timeStamp = new Date();
-      const lookupResult = this.lookupRepo.create(lookup);
-      await this.lookupRepo.save(lookupResult);
-      console.log('lookup kaydedildi');
-
-      for (const item of result.TotalNews) {
-        const news = new News();
-        news.lookup = lookupResult;
-        news.title = item.news.title;
-        news.spot = item.news.spot;
-        news.content = item.news.context;
-        news.order = item.news.order;
-
-        const newsResult = this.newsRepo.create(news);
-        await this.newsRepo.save(newsResult);
-        console.log('news Kaydedildi');
-      }
-
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-
-  async createTrNewsForDow(indice: string, lang: string) {
-    const result = await GetNews(BaseUrls.DowJonseTr);
-    // return result;
-    try {
-      const exist = await this.indiceRepo.findOne({ where: { alias: indice } });
-      if (exist) {
-        const lookup = new Lookup();
-        lookup.language = result.Lang;
-        lookup.indice = exist;
-        lookup.timeStamp = new Date();
-        const lookupResult = this.lookupRepo.create(lookup);
-        await this.lookupRepo.save(lookupResult);
-        console.log('lookup kaydedildi');
-
-        for (const item of result.TotalNews) {
-          const news = new News();
-          news.lookup = lookupResult;
-          news.title = item.news.title;
-          news.spot = item.news.spot;
-          news.content = item.news.context;
-          news.order = item.news.order;
-
-          const newsResult = this.newsRepo.create(news);
-          await this.newsRepo.save(newsResult);
-          console.log('news Kaydedildi');
+        url = BaseUrls.ApplTr;
+        break;
+      case 'dow':
+        if (lang === 'en') {
+          url = BaseUrls.DowJonesEn;
+          break;
         }
-        return true;
-      }
-      const alias: string = result.IndiceName.split(' ')[0];
-      const index = new Indice();
-      index.name = result.IndiceName;
-      index.alias = alias.toLocaleLowerCase();
-      const indexResult = this.indiceRepo.create(index);
-      await this.indiceRepo.save(indexResult);
-      console.log('index kaydedildi');
-
-      const lookup = new Lookup();
-      lookup.language = result.Lang;
-      lookup.indice = indexResult;
-      lookup.timeStamp = new Date();
-      const lookupResult = this.lookupRepo.create(lookup);
-      await this.lookupRepo.save(lookupResult);
-      console.log('lookup kaydedildi');
-
-      for (const item of result.TotalNews) {
-        const news = new News();
-        news.lookup = lookupResult;
-        news.title = item.news.title;
-        news.spot = item.news.spot;
-        news.content = item.news.context;
-        news.order = item.news.order;
-
-        const newsResult = this.newsRepo.create(news);
-        await this.newsRepo.save(newsResult);
-        console.log('news Kaydedildi');
-      }
-
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
+        url = BaseUrls.DowJonseTr;
+        break;
+      default:
+        url = BaseUrls.ApplEn;
+        break;
     }
-  }
+    return url;
+  };
+
+  base = async (url: string) => {
+    const image = await axios.get(url, { responseType: 'arraybuffer' });
+    const last = Buffer.from(image.data).toString('base64');
+    return last;
+  };
 }

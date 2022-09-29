@@ -18,7 +18,7 @@ const News = ({ alias, lang }) => {
         .catch((error) => {
           console.log(error);
         });
-      // console.log(data.news[0].content);
+      console.log(data);
       setData(data);
     };
     fetchData();
@@ -30,22 +30,23 @@ const News = ({ alias, lang }) => {
     setState(newIndex);
   };
 
-  const arrangeData = (arr) => {
-    let str = "";
-    let temp = "";
-    return arr.map((item) => {
-      if (item.slice(-1) !== ".") {
-        str = item;
-      } else {
-        str = str.concat(item);
-        temp = str;
-        str = " ";
-        console.log(temp);
+  // const arrangeData = (arr) => {
+  //   let str = "";
+  //   let temp = "";
+  //   return arr.map((item) => {
+  //     // console.log(item);
+  //     if (item.slice(-1) !== ".") {
+  //       str = item;
+  //     } else {
+  //       str = str.concat(item);
+  //       temp = str;
+  //       str = " ";
+  //       // console.log(temp);
 
-        return <p>{temp}</p>;
-      }
-    });
-  };
+  //       return <p>{temp}</p>;
+  //     }
+  //   });
+  // };
 
   return (
     <Accordion>
@@ -54,21 +55,34 @@ const News = ({ alias, lang }) => {
         <br />
       </div>
       {data?.news?.map((item, i) => (
-        <div key={item.id}>
+        <div
+          key={item.id}
+          style={{ borderBottom: "1px solid #ddd", marginBottom: "10px" }}
+        >
           <Accordion.Title active={state === i} index={i} onClick={handleClick}>
-            <h4>
-              <Icon name="dropdown" />
-              {item.title}
-            </h4>
+            <div style={{ display: "flex" }}>
+              <img
+                src={item.sumImgURL}
+                style={{
+                  maxWidth: "80px",
+                  padding: "5px",
+                  boxShadow: "0px 0px 3px #000",
+                }}
+              />
+              <h4>
+                <Icon name="dropdown" />
+                {item.title}
+              </h4>
+            </div>
           </Accordion.Title>
           <Accordion.Title>
             <p>{item.spot}</p>
           </Accordion.Title>
           <Accordion.Content active={state === i}>
-            {arrangeData(item.content)}
-            {/* {item.content.map((el) => {
-              return <p>{el}</p>;
-            })} */}
+            {/* {arrangeData(item.content)} */}
+            {item.content.map((el) => {
+              return <span>{el}</span>;
+            })}
           </Accordion.Content>
         </div>
       ))}

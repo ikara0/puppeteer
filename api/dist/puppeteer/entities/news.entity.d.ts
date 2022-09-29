@@ -4,6 +4,7 @@ export declare class News {
     title: string;
     spot: string;
     content?: string[];
+    sumImgURL: string;
     order?: number;
     lookup: Lookup;
 }
