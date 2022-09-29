@@ -18,7 +18,7 @@ const News = ({ alias, lang }) => {
         .catch((error) => {
           console.log(error);
         });
-
+      // console.log(data.news[0].content);
       setData(data);
     };
     fetchData();
@@ -28,6 +28,23 @@ const News = ({ alias, lang }) => {
     const { index } = titleProps;
     const newIndex = state === index ? -1 : index;
     setState(newIndex);
+  };
+
+  const arrangeData = (arr) => {
+    let str = "";
+    let temp = "";
+    return arr.map((item) => {
+      if (item.slice(-1) !== ".") {
+        str = item;
+      } else {
+        str = str.concat(item);
+        temp = str;
+        str = " ";
+        console.log(temp);
+
+        return <p>{temp}</p>;
+      }
+    });
   };
 
   return (
@@ -48,9 +65,10 @@ const News = ({ alias, lang }) => {
             <p>{item.spot}</p>
           </Accordion.Title>
           <Accordion.Content active={state === i}>
-            {item.content.map((el) => {
+            {arrangeData(item.content)}
+            {/* {item.content.map((el) => {
               return <p>{el}</p>;
-            })}
+            })} */}
           </Accordion.Content>
         </div>
       ))}
