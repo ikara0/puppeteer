@@ -7,6 +7,7 @@ export class PuppeteerController {
 
   @Get('/news/:alias')
   getNewsByAlias(@Param('alias') alias: string, @Query('lang') lang: string) {
+    console.log(alias, lang);
     return this.pptService.getNewsByAlias(alias, lang);
   }
 

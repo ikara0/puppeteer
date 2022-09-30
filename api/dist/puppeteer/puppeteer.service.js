@@ -44,6 +44,76 @@ let PuppeteerService = class PuppeteerService {
                     }
                     url = baseUrls_contants_1.BaseUrls.DowJonseTr;
                     break;
+                case 'eurUsd':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.EurUsdEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.EurUsdTr;
+                    break;
+                case 'gbpUsd':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.GbpUsdEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.GbpUsdTr;
+                    break;
+                case 'usdJpy':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.UsdJpyEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.UsdJpyTr;
+                    break;
+                case 'usdChf':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.UsdChfEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.UsdChfTr;
+                    break;
+                case 'audUsd':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.AudUsdEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.AudUsdTr;
+                    break;
+                case 'eurGbp':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.EurGbpEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.EurGbpTr;
+                    break;
+                case 'usdCad':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.UsdCadEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.UsdCadTr;
+                    break;
+                case 'nzdUsd':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.NzdUsdEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.NzdUsdTr;
+                    break;
+                case 'xauUsd':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.XauUsdEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.XauUsdTr;
+                    break;
+                case 'xagUsd':
+                    if (lang === 'en') {
+                        url = baseUrls_contants_1.BaseUrls.XagUsdEn;
+                        break;
+                    }
+                    url = baseUrls_contants_1.BaseUrls.XagUsdTr;
+                    break;
                 default:
                     url = baseUrls_contants_1.BaseUrls.ApplEn;
                     break;

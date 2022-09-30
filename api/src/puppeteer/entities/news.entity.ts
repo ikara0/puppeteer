@@ -13,13 +13,13 @@ export class News {
   spot: string;
 
   @Column({ array: true })
-  content?: string;
+  content: string;
 
   @Column({ nullable: true })
   sumImgURL: string;
 
   @Column()
-  order?: number;
+  order: number;
 
   @ManyToOne(() => Lookup, (lookup) => lookup.news)
   lookup: Lookup;

@@ -33,7 +33,6 @@ export class PuppeteerService {
         const lookupResult = this.lookupRepo.create(lookup);
         await this.lookupRepo.save(lookupResult);
         console.log('lookup kaydedildi');
-
         for (const item of result.TotalNews) {
           const news = new News();
           let lastImg = await this.base(item.news.sumImgSrc);
@@ -43,7 +42,6 @@ export class PuppeteerService {
           news.spot = item.news.spot;
           news.content = item.news.context;
           news.order = item.news.order;
-
           const newsResult = this.newsRepo.create(news);
           await this.newsRepo.save(newsResult);
           console.log('news Kaydedildi');
@@ -112,7 +110,7 @@ export class PuppeteerService {
       .orderBy('news.order', 'ASC')
       .getMany();
     console.log('news bulundu');
- 
+
     const result: any = {
       indiceName: indice.name,
       time: lookup.timeStamp,
@@ -138,6 +136,76 @@ export class PuppeteerService {
           break;
         }
         url = BaseUrls.DowJonseTr;
+        break;
+      case 'eurUsd':
+        if (lang === 'en') {
+          url = BaseUrls.EurUsdEn;
+          break;
+        }
+        url = BaseUrls.EurUsdTr;
+        break;
+      case 'gbpUsd':
+        if (lang === 'en') {
+          url = BaseUrls.GbpUsdEn;
+          break;
+        }
+        url = BaseUrls.GbpUsdTr;
+        break;
+      case 'usdJpy':
+        if (lang === 'en') {
+          url = BaseUrls.UsdJpyEn;
+          break;
+        }
+        url = BaseUrls.UsdJpyTr;
+        break;
+      case 'usdChf':
+        if (lang === 'en') {
+          url = BaseUrls.UsdChfEn;
+          break;
+        }
+        url = BaseUrls.UsdChfTr;
+        break;
+      case 'audUsd':
+        if (lang === 'en') {
+          url = BaseUrls.AudUsdEn;
+          break;
+        }
+        url = BaseUrls.AudUsdTr;
+        break;
+      case 'eurGbp':
+        if (lang === 'en') {
+          url = BaseUrls.EurGbpEn;
+          break;
+        }
+        url = BaseUrls.EurGbpTr;
+        break;
+      case 'usdCad':
+        if (lang === 'en') {
+          url = BaseUrls.UsdCadEn;
+          break;
+        }
+        url = BaseUrls.UsdCadTr;
+        break;
+      case 'nzdUsd':
+        if (lang === 'en') {
+          url = BaseUrls.NzdUsdEn;
+          break;
+        }
+        url = BaseUrls.NzdUsdTr;
+        break;
+      case 'xauUsd':
+        if (lang === 'en') {
+          url = BaseUrls.XauUsdEn;
+          break;
+        }
+        url = BaseUrls.XauUsdTr;
+        break;
+      case 'xagUsd':
+        if (lang === 'en') {
+          url = BaseUrls.XagUsdEn;
+          break;
+        }
+        url = BaseUrls.XagUsdTr;
         break;
       default:
         url = BaseUrls.ApplEn;
