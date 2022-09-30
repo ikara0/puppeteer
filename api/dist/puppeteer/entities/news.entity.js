@@ -27,8 +27,8 @@ __decorate([
     __metadata("design:type", String)
 ], News.prototype, "spot", void 0);
 __decorate([
-    (0, typeorm_1.Column)('simple-array'),
-    __metadata("design:type", Array)
+    (0, typeorm_1.Column)({ array: true }),
+    __metadata("design:type", String)
 ], News.prototype, "content", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),

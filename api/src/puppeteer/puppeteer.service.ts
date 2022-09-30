@@ -112,7 +112,7 @@ export class PuppeteerService {
       .orderBy('news.order', 'ASC')
       .getMany();
     console.log('news bulundu');
-
+ 
     const result: any = {
       indiceName: indice.name,
       time: lookup.timeStamp,

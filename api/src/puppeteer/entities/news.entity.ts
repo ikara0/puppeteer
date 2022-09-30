@@ -12,8 +12,8 @@ export class News {
   @Column()
   spot: string;
 
-  @Column('simple-array')
-  content?: string[];
+  @Column({ array: true })
+  content?: string;
 
   @Column({ nullable: true })
   sumImgURL: string;

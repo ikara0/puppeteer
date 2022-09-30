@@ -18,7 +18,6 @@ const News = ({ alias, lang }) => {
         .catch((error) => {
           console.log(error);
         });
-      console.log(data);
       setData(data);
     };
     fetchData();
@@ -29,24 +28,6 @@ const News = ({ alias, lang }) => {
     const newIndex = state === index ? -1 : index;
     setState(newIndex);
   };
-
-  // const arrangeData = (arr) => {
-  //   let str = "";
-  //   let temp = "";
-  //   return arr.map((item) => {
-  //     // console.log(item);
-  //     if (item.slice(-1) !== ".") {
-  //       str = item;
-  //     } else {
-  //       str = str.concat(item);
-  //       temp = str;
-  //       str = " ";
-  //       // console.log(temp);
-
-  //       return <p>{temp}</p>;
-  //     }
-  //   });
-  // };
 
   return (
     <Accordion>
@@ -68,6 +49,7 @@ const News = ({ alias, lang }) => {
                   padding: "5px",
                   boxShadow: "0px 0px 3px #000",
                 }}
+                alt=""
               />
               <h4>
                 <Icon name="dropdown" />
@@ -76,12 +58,11 @@ const News = ({ alias, lang }) => {
             </div>
           </Accordion.Title>
           <Accordion.Title>
-            <p>{item.spot}</p>
+            <p>{item.spot.replace("Inversting.com", " ")}</p>
           </Accordion.Title>
           <Accordion.Content active={state === i}>
-            {/* {arrangeData(item.content)} */}
             {item.content.map((el) => {
-              return <span>{el}</span>;
+              return <p>{el.replace("Inversting.com", " ")}</p>;
             })}
           </Accordion.Content>
         </div>

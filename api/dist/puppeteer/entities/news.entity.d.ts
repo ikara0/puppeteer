@@ -3,7 +3,7 @@ export declare class News {
     id: string;
     title: string;
     spot: string;
-    content?: string[];
+    content?: string;
     sumImgURL: string;
     order?: number;
     lookup: Lookup;
