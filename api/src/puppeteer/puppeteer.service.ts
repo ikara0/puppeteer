@@ -2,10 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import { Repository } from 'typeorm';
-import { BaseUrls } from './constants/baseUrls.contants';
+import {
+  BaseCryptoUrls,
+  BaseCurrenciesUrls,
+} from './constants/baseUrls.contants';
 import { Indice } from './entities/indice.entity';
 import { Lookup } from './entities/lookup.entinty';
 import { News } from './entities/news.entity';
+import { CreateCurrencieNews } from './functions/createCurrencieNews';
+import { GetCryptoNews } from './functions/getCryptoNews';
 
 import { GetNews } from './functions/getNews';
 
@@ -16,74 +21,104 @@ export class PuppeteerService {
     @InjectRepository(Indice) private indiceRepo: Repository<Indice>,
     @InjectRepository(News) private newsRepo: Repository<News>,
   ) {}
+  async createNewsForCrypto() {
+    for (const item of Object.keys(BaseCryptoUrls)) {
+      const url: string = BaseCryptoUrls[item];
+      const result = await GetCryptoNews(url);
+      console.log(result);
+    }
+    return true;
+  }
+
+  async refreshCurrenciesNews() {
+    const alias = this.indiceRepo
+      .createQueryBuilder('news')
+      .select('news.alias')
+      .getMany();
+
+    //TODO
+
+    for (let i = 0; i < Object.keys(BaseCurrenciesUrls).length; i++) {
+      console.log(BaseCurrenciesUrls[i].value);
+    }
+    return alias;
+  }
 
   async createNewsByAliasAndLang(alias: string, lang: string) {
     const url = this.setUrl(alias, lang);
 
-    const result = await GetNews(url);
-    // return result;
+    const data = await GetNews(url);
 
-    try {
-      const exist = await this.indiceRepo.findOne({ where: { alias: alias } });
-      if (exist) {
-        const lookup = new Lookup();
-        lookup.language = result.lang;
-        lookup.indice = exist;
-        lookup.timeStamp = new Date();
-        const lookupResult = this.lookupRepo.create(lookup);
-        await this.lookupRepo.save(lookupResult);
-        console.log('lookup kaydedildi');
-        for (const item of result.news) {
-          const news = new News();
-          let lastImg = await this.base(item.sumImgSrc);
-          news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
-          news.lookup = lookupResult;
-          news.title = item.title;
-          news.spot = item.spot;
-          news.content = item.content;
-          news.order = item.order;
-          const newsResult = this.newsRepo.create(news);
-          await this.newsRepo.save(newsResult);
-          console.log('news Kaydedildi');
-        }
-        return true;
-      }
-      const newsAlias: string = result.IndiceName.split(' ')[0];
-      const index = new Indice();
-      index.name = result.indiceName;
-      index.alias = newsAlias.toLocaleLowerCase();
-      const indexResult = this.indiceRepo.create(index);
-      await this.indiceRepo.save(indexResult);
-      console.log('index kaydedildi');
+    const result = await CreateCurrencieNews(
+      data,
+      alias,
+      this.indiceRepo,
+      this.newsRepo,
+      this.lookupRepo,
+    );
+    return result;
 
-      const lookup = new Lookup();
-      lookup.language = result.lang;
-      lookup.indice = indexResult;
-      lookup.timeStamp = new Date();
-      const lookupResult = this.lookupRepo.create(lookup);
-      await this.lookupRepo.save(lookupResult);
-      console.log('lookup kaydedildi');
+    // try {
+    //   const exist = await this.indiceRepo.findOne({ where: { alias: alias } });
+    //   if (exist) {
+    //     const lookup = new Lookup();
+    //     lookup.language = result.lang;
+    //     lookup.indice = exist;
+    //     lookup.timeStamp = new Date();
+    //     const lookupResult = this.lookupRepo.create(lookup);
+    //     await this.lookupRepo.save(lookupResult);
+    //     console.log('lookup kaydedildi');
+    //     for (const item of result.news) {
+    //       const news = new News();
+    //       // let lastImg = await this.base(item.sumImgSrc);
+    //       // news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
+    //       news.lookup = lookupResult;
+    //       news.title = item.title;
+    //       news.spot = item.spot;
+    //       news.content = item.content;
+    //       news.order = item.order;
+    //       const newsResult = this.newsRepo.create(news);
+    //       await this.newsRepo.save(newsResult);
+    //       console.log('news Kaydedildi');
+    //     }
+    //     return true;
+    //   }
+    //   const newsAlias: string = result.IndiceName.split(' ')[0];
+    //   const index = new Indice();
+    //   index.name = result.indiceName;
+    //   index.alias = newsAlias.toLocaleLowerCase();
+    //   const indexResult = this.indiceRepo.create(index);
+    //   await this.indiceRepo.save(indexResult);
+    //   console.log('index kaydedildi');
 
-      for (const item of result.news) {
-        const news = new News();
-        let lastImg = await this.base(item.sumImgSrc);
-        news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
-        news.lookup = lookupResult;
-        news.title = item.title;
-        news.spot = item.spot;
-        news.content = item.content;
-        news.order = item.order;
+    //   const lookup = new Lookup();
+    //   lookup.language = result.lang;
+    //   lookup.indice = indexResult;
+    //   lookup.timeStamp = new Date();
+    //   const lookupResult = this.lookupRepo.create(lookup);
+    //   await this.lookupRepo.save(lookupResult);
+    //   console.log('lookup kaydedildi');
 
-        const newsResult = this.newsRepo.create(news);
-        await this.newsRepo.save(newsResult);
-        console.log('news Kaydedildi');
-      }
+    //   for (const item of result.news) {
+    //     const news = new News();
+    //     // let lastImg = await this.base(item.sumImgSrc);
+    //     // news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
+    //     news.lookup = lookupResult;
+    //     news.title = item.title;
+    //     news.spot = item.spot;
+    //     news.content = item.content;
+    //     news.order = item.order;
 
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+    //     const newsResult = this.newsRepo.create(news);
+    //     await this.newsRepo.save(newsResult);
+    //     console.log('news Kaydedildi');
+    //   }
+
+    //   return true;
+    // } catch (error) {
+    //   console.log(error);
+    //   return false;
+    // }
   }
 
   async getNewsByAlias(alias: string, lang: string) {
@@ -125,98 +160,92 @@ export class PuppeteerService {
     switch (alias) {
       case 'apple':
         if (lang === 'en') {
-          url = BaseUrls.ApplEn;
+          url = BaseCurrenciesUrls.ApplEn;
           break;
         }
-        url = BaseUrls.ApplTr;
+        url = BaseCurrenciesUrls.ApplTr;
         break;
       case 'dow':
         if (lang === 'en') {
-          url = BaseUrls.DowJonesEn;
+          url = BaseCurrenciesUrls.DowJonesEn;
           break;
         }
-        url = BaseUrls.DowJonseTr;
+        url = BaseCurrenciesUrls.DowJonseTr;
         break;
       case 'eurUsd':
         if (lang === 'en') {
-          url = BaseUrls.EurUsdEn;
+          url = BaseCurrenciesUrls.EurUsdEn;
           break;
         }
-        url = BaseUrls.EurUsdTr;
+        url = BaseCurrenciesUrls.EurUsdTr;
         break;
       case 'gbpUsd':
         if (lang === 'en') {
-          url = BaseUrls.GbpUsdEn;
+          url = BaseCurrenciesUrls.GbpUsdEn;
           break;
         }
-        url = BaseUrls.GbpUsdTr;
+        url = BaseCurrenciesUrls.GbpUsdTr;
         break;
       case 'usdJpy':
         if (lang === 'en') {
-          url = BaseUrls.UsdJpyEn;
+          url = BaseCurrenciesUrls.UsdJpyEn;
           break;
         }
-        url = BaseUrls.UsdJpyTr;
+        url = BaseCurrenciesUrls.UsdJpyTr;
         break;
       case 'usdChf':
         if (lang === 'en') {
-          url = BaseUrls.UsdChfEn;
+          url = BaseCurrenciesUrls.UsdChfEn;
           break;
         }
-        url = BaseUrls.UsdChfTr;
+        url = BaseCurrenciesUrls.UsdChfTr;
         break;
       case 'audUsd':
         if (lang === 'en') {
-          url = BaseUrls.AudUsdEn;
+          url = BaseCurrenciesUrls.AudUsdEn;
           break;
         }
-        url = BaseUrls.AudUsdTr;
+        url = BaseCurrenciesUrls.AudUsdTr;
         break;
       case 'eurGbp':
         if (lang === 'en') {
-          url = BaseUrls.EurGbpEn;
+          url = BaseCurrenciesUrls.EurGbpEn;
           break;
         }
-        url = BaseUrls.EurGbpTr;
+        url = BaseCurrenciesUrls.EurGbpTr;
         break;
       case 'usdCad':
         if (lang === 'en') {
-          url = BaseUrls.UsdCadEn;
+          url = BaseCurrenciesUrls.UsdCadEn;
           break;
         }
-        url = BaseUrls.UsdCadTr;
+        url = BaseCurrenciesUrls.UsdCadTr;
         break;
       case 'nzdUsd':
         if (lang === 'en') {
-          url = BaseUrls.NzdUsdEn;
+          url = BaseCurrenciesUrls.NzdUsdEn;
           break;
         }
-        url = BaseUrls.NzdUsdTr;
+        url = BaseCurrenciesUrls.NzdUsdTr;
         break;
       case 'xauUsd':
         if (lang === 'en') {
-          url = BaseUrls.XauUsdEn;
+          url = BaseCurrenciesUrls.XauUsdEn;
           break;
         }
-        url = BaseUrls.XauUsdTr;
+        url = BaseCurrenciesUrls.XauUsdTr;
         break;
       case 'xagUsd':
         if (lang === 'en') {
-          url = BaseUrls.XagUsdEn;
+          url = BaseCurrenciesUrls.XagUsdEn;
           break;
         }
-        url = BaseUrls.XagUsdTr;
+        url = BaseCurrenciesUrls.XagUsdTr;
         break;
       default:
-        url = BaseUrls.ApplEn;
+        url = BaseCurrenciesUrls.ApplEn;
         break;
     }
     return url;
-  };
-
-  base = async (url: string) => {
-    const image = await axios.get(url, { responseType: 'arraybuffer' });
-    const last = Buffer.from(image.data).toString('base64');
-    return last;
   };
 }

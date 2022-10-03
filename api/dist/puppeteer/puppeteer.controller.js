@@ -23,8 +23,14 @@ let PuppeteerController = class PuppeteerController {
         console.log(alias, lang);
         return this.pptService.getNewsByAlias(alias, lang);
     }
-    createNewsByAliasAndLang(alias, lang) {
+    createNewsByAliasAndLangForCurrencies(alias, lang) {
         return this.pptService.createNewsByAliasAndLang(alias, lang);
+    }
+    createNewsByAliasAndLangForCrypto() {
+        return this.pptService.createNewsForCrypto();
+    }
+    refreshCurrencies() {
+        return this.pptService.refreshCurrenciesNews();
     }
 };
 __decorate([
@@ -36,13 +42,25 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PuppeteerController.prototype, "getNewsByAlias", null);
 __decorate([
-    (0, common_1.Post)('news/:alias'),
+    (0, common_1.Post)('news/currencies/:alias'),
     __param(0, (0, common_1.Param)('alias')),
     __param(1, (0, common_1.Query)('lang')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
-], PuppeteerController.prototype, "createNewsByAliasAndLang", null);
+], PuppeteerController.prototype, "createNewsByAliasAndLangForCurrencies", null);
+__decorate([
+    (0, common_1.Post)('news/crypto/create'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], PuppeteerController.prototype, "createNewsByAliasAndLangForCrypto", null);
+__decorate([
+    (0, common_1.Post)('refresh/news/currencies'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], PuppeteerController.prototype, "refreshCurrencies", null);
 PuppeteerController = __decorate([
     (0, common_1.Controller)('puppeteer'),
     __metadata("design:paramtypes", [puppeteer_service_1.PuppeteerService])

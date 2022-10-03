@@ -1,4 +1,4 @@
-export enum BaseUrls {
+export enum BaseCurrenciesUrls {
   ApplEn = 'https://www.investing.com/equities/apple-computer-inc-news',
   ApplTr = 'https://tr.investing.com/equities/apple-computer-inc-news',
   DowJonesEn = 'https://www.investing.com/indices/us-30-news',
@@ -23,4 +23,21 @@ export enum BaseUrls {
   XauUsdEn = 'https://www.investing.com/currencies/xau-usd-news',
   XagUsdEn = 'https://www.investing.com/currencies/xag-usd-news',
   XagUsdTr = 'https://tr.investing.com/currencies/xag-usd-news',
+}
+
+export enum BaseCryptoUrls {
+  BtcUsdEn = 'https://www.investing.com/crypto/bitcoin/news',
+  BtcUsdTr = 'https://tr.investing.com/crypto/bitcoin/news',
+  EthUSdTr = 'https://tr.investing.com/crypto/ethereum/news',
+  EthUsdEn = 'https://www.investing.com/crypto/ethereum/news',
+  LtcUsdTr = 'https://tr.investing.com/crypto/litecoin/news',
+  LtcUsdEn = 'https://www.investing.com/crypto/litecoin/news',
+  EtcUsdTr = 'https://tr.investing.com/crypto/ethereum-classic/news',
+  EtcUsdEn = 'https://www.investing.com/crypto/ethereum-classic/news',
+  EtcBtcTr = 'https://tr.investing.com/crypto/ethereum/news',
+  EtcBtcEn = 'https://www.investing.com/crypto/ethereum/news',
+  IotaUsdTr = 'https://tr.investing.com/crypto/iota/news',
+  IotaUsdEn = 'https://www.investing.com/crypto/iota/news',
+  XrpUsdTr = 'https://tr.investing.com/crypto/xrp/news',
+  XrpUsdEn = 'https://www.investing.com/crypto/xrp/news',
 }

@@ -15,12 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PuppeteerService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const axios_1 = require("axios");
 const typeorm_2 = require("typeorm");
 const baseUrls_contants_1 = require("./constants/baseUrls.contants");
 const indice_entity_1 = require("./entities/indice.entity");
 const lookup_entinty_1 = require("./entities/lookup.entinty");
 const news_entity_1 = require("./entities/news.entity");
+const createCurrencieNews_1 = require("./functions/createCurrencieNews");
+const getCryptoNews_1 = require("./functions/getCryptoNews");
 const getNews_1 = require("./functions/getNews");
 let PuppeteerService = class PuppeteerService {
     constructor(lookupRepo, indiceRepo, newsRepo) {
@@ -32,161 +33,118 @@ let PuppeteerService = class PuppeteerService {
             switch (alias) {
                 case 'apple':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.ApplEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.ApplEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.ApplTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.ApplTr;
                     break;
                 case 'dow':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.DowJonesEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.DowJonesEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.DowJonseTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.DowJonseTr;
                     break;
                 case 'eurUsd':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.EurUsdEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.EurUsdEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.EurUsdTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.EurUsdTr;
                     break;
                 case 'gbpUsd':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.GbpUsdEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.GbpUsdEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.GbpUsdTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.GbpUsdTr;
                     break;
                 case 'usdJpy':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.UsdJpyEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.UsdJpyEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.UsdJpyTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.UsdJpyTr;
                     break;
                 case 'usdChf':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.UsdChfEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.UsdChfEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.UsdChfTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.UsdChfTr;
                     break;
                 case 'audUsd':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.AudUsdEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.AudUsdEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.AudUsdTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.AudUsdTr;
                     break;
                 case 'eurGbp':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.EurGbpEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.EurGbpEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.EurGbpTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.EurGbpTr;
                     break;
                 case 'usdCad':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.UsdCadEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.UsdCadEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.UsdCadTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.UsdCadTr;
                     break;
                 case 'nzdUsd':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.NzdUsdEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.NzdUsdEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.NzdUsdTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.NzdUsdTr;
                     break;
                 case 'xauUsd':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.XauUsdEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.XauUsdEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.XauUsdTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.XauUsdTr;
                     break;
                 case 'xagUsd':
                     if (lang === 'en') {
-                        url = baseUrls_contants_1.BaseUrls.XagUsdEn;
+                        url = baseUrls_contants_1.BaseCurrenciesUrls.XagUsdEn;
                         break;
                     }
-                    url = baseUrls_contants_1.BaseUrls.XagUsdTr;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.XagUsdTr;
                     break;
                 default:
-                    url = baseUrls_contants_1.BaseUrls.ApplEn;
+                    url = baseUrls_contants_1.BaseCurrenciesUrls.ApplEn;
                     break;
             }
             return url;
         };
-        this.base = async (url) => {
-            const image = await axios_1.default.get(url, { responseType: 'arraybuffer' });
-            const last = Buffer.from(image.data).toString('base64');
-            return last;
-        };
+    }
+    async createNewsForCrypto() {
+        for (const item of Object.keys(baseUrls_contants_1.BaseCryptoUrls)) {
+            const url = baseUrls_contants_1.BaseCryptoUrls[item];
+            const result = await (0, getCryptoNews_1.GetCryptoNews)(url);
+            console.log(result);
+        }
+        return true;
+    }
+    async refreshCurrenciesNews() {
+        const alias = this.indiceRepo
+            .createQueryBuilder('news')
+            .select('news.alias')
+            .getMany();
+        for (let i = 0; i < Object.keys(baseUrls_contants_1.BaseCurrenciesUrls).length; i++) {
+            console.log(baseUrls_contants_1.BaseCurrenciesUrls[i].value);
+        }
+        return alias;
     }
     async createNewsByAliasAndLang(alias, lang) {
         const url = this.setUrl(alias, lang);
-        const result = await (0, getNews_1.GetNews)(url);
-        try {
-            const exist = await this.indiceRepo.findOne({ where: { alias: alias } });
-            if (exist) {
-                const lookup = new lookup_entinty_1.Lookup();
-                lookup.language = result.lang;
-                lookup.indice = exist;
-                lookup.timeStamp = new Date();
-                const lookupResult = this.lookupRepo.create(lookup);
-                await this.lookupRepo.save(lookupResult);
-                console.log('lookup kaydedildi');
-                for (const item of result.news) {
-                    const news = new news_entity_1.News();
-                    let lastImg = await this.base(item.sumImgSrc);
-                    news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
-                    news.lookup = lookupResult;
-                    news.title = item.title;
-                    news.spot = item.spot;
-                    news.content = item.content;
-                    news.order = item.order;
-                    const newsResult = this.newsRepo.create(news);
-                    await this.newsRepo.save(newsResult);
-                    console.log('news Kaydedildi');
-                }
-                return true;
-            }
-            const newsAlias = result.IndiceName.split(' ')[0];
-            const index = new indice_entity_1.Indice();
-            index.name = result.indiceName;
-            index.alias = newsAlias.toLocaleLowerCase();
-            const indexResult = this.indiceRepo.create(index);
-            await this.indiceRepo.save(indexResult);
-            console.log('index kaydedildi');
-            const lookup = new lookup_entinty_1.Lookup();
-            lookup.language = result.lang;
-            lookup.indice = indexResult;
-            lookup.timeStamp = new Date();
-            const lookupResult = this.lookupRepo.create(lookup);
-            await this.lookupRepo.save(lookupResult);
-            console.log('lookup kaydedildi');
-            for (const item of result.news) {
-                const news = new news_entity_1.News();
-                let lastImg = await this.base(item.sumImgSrc);
-                news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
-                news.lookup = lookupResult;
-                news.title = item.title;
-                news.spot = item.spot;
-                news.content = item.content;
-                news.order = item.order;
-                const newsResult = this.newsRepo.create(news);
-                await this.newsRepo.save(newsResult);
-                console.log('news Kaydedildi');
-            }
-            return true;
-        }
-        catch (error) {
-            console.log(error);
-            return false;
-        }
+        const data = await (0, getNews_1.GetNews)(url);
+        const result = await (0, createCurrencieNews_1.CreateCurrencieNews)(data, alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
+        return result;
     }
     async getNewsByAlias(alias, lang) {
         const indice = await this.indiceRepo.findOne({ where: { alias: alias } });
