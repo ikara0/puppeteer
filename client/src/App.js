@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import News from "./News";
 
@@ -7,6 +8,17 @@ function App() {
   function handle(id) {
     setAlias(id);
   }
+  const refresh = async () => {
+    const isRefreshed = await axios
+      .post(`http://localhost:3000/puppeteer/news/${alias}?lang=${lang}`)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return isRefreshed;
+  };
   return (
     <div className="ui container">
       <div>
@@ -19,6 +31,9 @@ function App() {
           <option value="en">English</option>
           <option value="tr">Türkçe</option>
         </select>
+        <button onClick={() => refresh()} className="ui button">
+          Refresh
+        </button>
       </div>
       <div style={{ marginTop: "5px", display: "flex" }}>
         <button onClick={() => handle("apple")} className="ui primary button">
