@@ -1,37 +1,30 @@
 import * as ppt from 'puppeteer';
 
-export async function GetNews(url: string) {
-  console.log('Veriler Yükleniyor', url);
+export async function GetCryptoNews(url: string) {
+  console.log('Crypto News Loading..');
   try {
     const browser = await ppt.launch();
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
     const value = await page.evaluate(async () => {
       let data: any = {};
-      data.indiceName = $('.instrumentHead h1')
-        .first()
-        .text()
-        .replace('\t', '');
+      data.indexName = $('#fullColumn h1').first().text().replace('\t', '');
       data.lang = document.documentElement.lang;
       data.news = [];
-      const result = $('.mediumTitle1 .articleItem')
-        .map((i: number, el: any) => {
-          if (el.children[1].children[0].href.includes('investing.com')) {
-            if (i > 2 && el.children[1].children[2].innerText !== '') {
-              let obj: any = {};
-              obj.title = el.children[1].children[0].innerText;
-              obj.spot = el.children[1].children[2].innerText.replace(
-                'Investing.com',
-                ' ',
-              );
-              obj.sumImgSrc = el.children[0].childNodes[0].dataset.src;
-              obj.totalNewsLink = el.children[1].children[0].href;
-              obj.order = i;
-              data.news.push(obj);
-            }
-          }
-        })
-        .get();
+      const result = $('.js-news-items .articleItem').map((i, el: any) => {
+        let obj: any = {};
+        if (el.children[1].children[0].href.includes('investing.com')) {
+          obj.title = el.children[1].children[0].innerText;
+          obj.spot = el.children[1].children[2].innerText.replace(
+            'Investing.com',
+            ' ',
+          );
+          obj.totalNewsLink = el.children[1].children[0].href;
+          obj.sumImgSrc = el.children[0].childNodes[0].dataset.src;
+          obj.order = i;
+          data.news.push(obj);
+        }
+      });
       return data;
     });
     console.log('Summary Handled');
@@ -58,7 +51,7 @@ export async function GetNews(url: string) {
             .get();
           return totalParag;
         });
-        news[i].content = total;
+        news[i].totalNews = total;
       }
     }
     console.log('Total Handled');

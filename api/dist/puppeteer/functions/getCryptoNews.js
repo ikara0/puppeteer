@@ -1,36 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetNews = void 0;
+exports.GetCryptoNews = void 0;
 const ppt = require("puppeteer");
-async function GetNews(url) {
-    console.log('Veriler Yükleniyor', url);
+async function GetCryptoNews(url) {
+    console.log('Crypto News Loading..');
     try {
         const browser = await ppt.launch();
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
         const value = await page.evaluate(async () => {
             let data = {};
-            data.indiceName = $('.instrumentHead h1')
-                .first()
-                .text()
-                .replace('\t', '');
+            data.indexName = $('#fullColumn h1').first().text().replace('\t', '');
             data.lang = document.documentElement.lang;
             data.news = [];
-            const result = $('.mediumTitle1 .articleItem')
-                .map((i, el) => {
+            const result = $('.js-news-items .articleItem').map((i, el) => {
+                let obj = {};
                 if (el.children[1].children[0].href.includes('investing.com')) {
-                    if (i > 2 && el.children[1].children[2].innerText !== '') {
-                        let obj = {};
-                        obj.title = el.children[1].children[0].innerText;
-                        obj.spot = el.children[1].children[2].innerText.replace('Investing.com', ' ');
-                        obj.sumImgSrc = el.children[0].childNodes[0].dataset.src;
-                        obj.totalNewsLink = el.children[1].children[0].href;
-                        obj.order = i;
-                        data.news.push(obj);
-                    }
+                    obj.title = el.children[1].children[0].innerText;
+                    obj.spot = el.children[1].children[2].innerText.replace('Investing.com', ' ');
+                    obj.totalNewsLink = el.children[1].children[0].href;
+                    obj.sumImgSrc = el.children[0].childNodes[0].dataset.src;
+                    obj.order = i;
+                    data.news.push(obj);
                 }
-            })
-                .get();
+            });
             return data;
         });
         console.log('Summary Handled');
@@ -55,7 +48,7 @@ async function GetNews(url) {
                         .get();
                     return totalParag;
                 });
-                news[i].content = total;
+                news[i].totalNews = total;
             }
         }
         console.log('Total Handled');
@@ -65,5 +58,5 @@ async function GetNews(url) {
         console.log(error);
     }
 }
-exports.GetNews = GetNews;
-//# sourceMappingURL=getNews.js.map
+exports.GetCryptoNews = GetCryptoNews;
+//# sourceMappingURL=getCryptoNews.js.map

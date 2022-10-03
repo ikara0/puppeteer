@@ -27,21 +27,21 @@ export class PuppeteerService {
       const exist = await this.indiceRepo.findOne({ where: { alias: alias } });
       if (exist) {
         const lookup = new Lookup();
-        lookup.language = result.Lang;
+        lookup.language = result.lang;
         lookup.indice = exist;
         lookup.timeStamp = new Date();
         const lookupResult = this.lookupRepo.create(lookup);
         await this.lookupRepo.save(lookupResult);
         console.log('lookup kaydedildi');
-        for (const item of result.TotalNews) {
+        for (const item of result.news) {
           const news = new News();
-          let lastImg = await this.base(item.news.sumImgSrc);
+          let lastImg = await this.base(item.sumImgSrc);
           news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
           news.lookup = lookupResult;
-          news.title = item.news.title;
-          news.spot = item.news.spot;
-          news.content = item.news.context;
-          news.order = item.news.order;
+          news.title = item.title;
+          news.spot = item.spot;
+          news.content = item.content;
+          news.order = item.order;
           const newsResult = this.newsRepo.create(news);
           await this.newsRepo.save(newsResult);
           console.log('news Kaydedildi');
@@ -50,29 +50,29 @@ export class PuppeteerService {
       }
       const newsAlias: string = result.IndiceName.split(' ')[0];
       const index = new Indice();
-      index.name = result.IndiceName;
+      index.name = result.indiceName;
       index.alias = newsAlias.toLocaleLowerCase();
       const indexResult = this.indiceRepo.create(index);
       await this.indiceRepo.save(indexResult);
       console.log('index kaydedildi');
 
       const lookup = new Lookup();
-      lookup.language = result.Lang;
+      lookup.language = result.lang;
       lookup.indice = indexResult;
       lookup.timeStamp = new Date();
       const lookupResult = this.lookupRepo.create(lookup);
       await this.lookupRepo.save(lookupResult);
       console.log('lookup kaydedildi');
 
-      for (const item of result.TotalNews) {
+      for (const item of result.news) {
         const news = new News();
-        let lastImg = await this.base(item.news.sumImgSrc);
+        let lastImg = await this.base(item.sumImgSrc);
         news.sumImgURL = `data:image/jpeg;base64,${lastImg}`;
         news.lookup = lookupResult;
-        news.title = item.news.title;
-        news.spot = item.news.spot;
-        news.content = item.news.context;
-        news.order = item.news.order;
+        news.title = item.title;
+        news.spot = item.spot;
+        news.content = item.content;
+        news.order = item.order;
 
         const newsResult = this.newsRepo.create(news);
         await this.newsRepo.save(newsResult);
