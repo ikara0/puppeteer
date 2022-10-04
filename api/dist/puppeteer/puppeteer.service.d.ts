@@ -7,6 +7,6 @@ export declare class PuppeteerService {
     private indiceRepo;
     private newsRepo;
     constructor(lookupRepo: Repository<Lookup>, indiceRepo: Repository<Indice>, newsRepo: Repository<News>);
-    refreshDb(): Promise<boolean>;
+    refreshDb(alias: string): Promise<Promise<boolean>[]>;
     getNewsByAlias(alias: string, lang: string): Promise<any>;
 }

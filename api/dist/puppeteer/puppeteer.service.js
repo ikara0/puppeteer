@@ -28,33 +28,24 @@ let PuppeteerService = class PuppeteerService {
         this.indiceRepo = indiceRepo;
         this.newsRepo = newsRepo;
     }
-    async refreshDb() {
-        const entities = await this.indiceRepo
+    async refreshDb(alias) {
+        const entity = await this.indiceRepo
             .createQueryBuilder('indice')
-            .getMany();
-        try {
-            if (entities) {
-                for (const item of entities) {
-                    item.source.forEach(async (url) => {
-                        if (url.includes('crypto')) {
-                            const data = await (0, getCryptoNews_1.GetCryptoNews)(url);
-                            const result = await (0, createNews_1.CreateNews)(data, item.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
-                            return result;
-                        }
-                        else {
-                            const data = await (0, getNews_1.GetNews)(url);
-                            const result = await (0, createNews_1.CreateNews)(data, item.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
-                            return result;
-                        }
-                    });
-                }
+            .where('indice.alias =:alias', { alias: alias })
+            .getOne();
+        const last = entity.source.map(async (url) => {
+            if (url.includes('crypto')) {
+                const data = await (0, getCryptoNews_1.GetCryptoNews)(url);
+                const result = await (0, createNews_1.CreateNews)(data, entity.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
+                return result;
             }
-            return true;
-        }
-        catch (error) {
-            console.log(error);
-            return false;
-        }
+            else {
+                const data = await (0, getNews_1.GetNews)(url);
+                const result = await (0, createNews_1.CreateNews)(data, entity.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
+                return result;
+            }
+        });
+        return last;
     }
     async getNewsByAlias(alias, lang) {
         const indice = await this.indiceRepo.findOne({ where: { alias: alias } });

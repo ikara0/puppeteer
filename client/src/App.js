@@ -73,6 +73,29 @@ function App() {
           XAG/USD
         </button>
       </div>
+      <div style={{ marginTop: "5px", display: "flex" }}>
+        <button onClick={() => handle("btc")} className="ui primary button">
+          BITCOIN
+        </button>
+        <button onClick={() => handle("eth")} className="ui primary button">
+          ETHEREUM
+        </button>
+        <button onClick={() => handle("ltc")} className="ui primary button">
+          LITECOIN
+        </button>
+        <button
+          onClick={() => handle("ethClassic")}
+          className="ui primary button"
+        >
+          ETHEREUM CLASSIC
+        </button>
+        <button onClick={() => handle("iota")} className="ui primary button">
+          IOTA
+        </button>
+        <button onClick={() => handle("xrp")} className="ui primary button">
+          XRP
+        </button>
+      </div>
       <hr />
       <News alias={alias} lang={lang} />
     </div>

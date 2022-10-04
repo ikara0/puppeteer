@@ -18,43 +18,37 @@ export class PuppeteerService {
     @InjectRepository(News) private newsRepo: Repository<News>,
   ) {}
 
-  async refreshDb() {
-    const entities = await this.indiceRepo
+  async refreshDb(alias: string) {
+    const entity = await this.indiceRepo
       .createQueryBuilder('indice')
-      .getMany();
-    try {
-      if (entities) {
-        for (const item of entities) {
-          item.source.forEach(async (url) => {
-            if (url.includes('crypto')) {
-              const data = await GetCryptoNews(url);
-              const result = await CreateNews(
-                data,
-                item.alias,
-                this.indiceRepo,
-                this.newsRepo,
-                this.lookupRepo,
-              );
-              return result;
-            } else {
-              const data = await GetNews(url);
-              const result = await CreateNews(
-                data,
-                item.alias,
-                this.indiceRepo,
-                this.newsRepo,
-                this.lookupRepo,
-              );
-              return result;
-            }
-          });
-        }
+      .where('indice.alias =:alias', { alias: alias })
+      .getOne();
+
+    const last = entity.source.map(async (url) => {
+      if (url.includes('crypto')) {
+        const data = await GetCryptoNews(url);
+        const result = await CreateNews(
+          data,
+          entity.alias,
+          this.indiceRepo,
+          this.newsRepo,
+          this.lookupRepo,
+        );
+        return result;
+      } else {
+        const data = await GetNews(url);
+        const result = await CreateNews(
+          data,
+          entity.alias,
+          this.indiceRepo,
+          this.newsRepo,
+          this.lookupRepo,
+        );
+        return result;
       }
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+    });
+
+    return last;
   }
   async getNewsByAlias(alias: string, lang: string) {
     const indice = await this.indiceRepo.findOne({ where: { alias: alias } });

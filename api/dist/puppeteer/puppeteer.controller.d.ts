@@ -3,5 +3,5 @@ export declare class PuppeteerController {
     private pptService;
     constructor(pptService: PuppeteerService);
     getNewsByAlias(alias: string, lang: string): Promise<any>;
-    refreshDb(): Promise<boolean>;
+    refreshDb(alias: string): Promise<Promise<boolean>[]>;
 }

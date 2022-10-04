@@ -13,6 +13,7 @@ export async function CreateNews(
 ) {
   try {
     const exist = await indiceRepo.findOne({ where: { alias: alias } });
+
     if (exist) {
       console.log('indice found');
       const lookup = new Lookup();
@@ -68,6 +69,7 @@ export async function CreateNews(
       await newsRepo.save(newsResult);
       console.log('news saved');
     }
+
     return true;
   } catch (error) {
     console.log(error);

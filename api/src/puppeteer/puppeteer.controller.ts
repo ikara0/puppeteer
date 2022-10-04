@@ -11,8 +11,8 @@ export class PuppeteerController {
     return this.pptService.getNewsByAlias(alias, lang);
   }
 
-  @Post('refresh/news')
-  refreshDb() {
-    return this.pptService.refreshDb();
+  @Post('/create/news/:alias')
+  refreshDb(@Param('alias') alias: string) {
+    return this.pptService.refreshDb(alias);
   }
 }
