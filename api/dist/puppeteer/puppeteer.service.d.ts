@@ -9,4 +9,5 @@ export declare class PuppeteerService {
     constructor(lookupRepo: Repository<Lookup>, indiceRepo: Repository<Indice>, newsRepo: Repository<News>);
     refreshDb(alias: string): Promise<Promise<boolean>[]>;
     getNewsByAlias(alias: string, lang: string): Promise<any>;
+    cronJob(): Promise<boolean>;
 }

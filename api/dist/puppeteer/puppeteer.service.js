@@ -22,6 +22,8 @@ const news_entity_1 = require("./entities/news.entity");
 const createNews_1 = require("./functions/createNews");
 const getCryptoNews_1 = require("./functions/getCryptoNews");
 const getNews_1 = require("./functions/getNews");
+const schedule_1 = require("@nestjs/schedule");
+const dist_1 = require("@nestjs/schedule/dist");
 let PuppeteerService = class PuppeteerService {
     constructor(lookupRepo, indiceRepo, newsRepo) {
         this.lookupRepo = lookupRepo;
@@ -76,7 +78,55 @@ let PuppeteerService = class PuppeteerService {
         };
         return result;
     }
+    async cronJob() {
+        const firstLookup = await this.lookupRepo.find({
+            order: { timeStamp: 'ASC' },
+            relations: {
+                indice: true,
+            },
+            select: ['id', 'timeStamp', 'language', 'indice'],
+        });
+        let url;
+        const { indice } = firstLookup[0];
+        if (firstLookup[0].language === 'en') {
+            const enURL = indice.source.filter((url) => url.includes('www'))[0];
+            url = enURL;
+        }
+        else {
+            const trURL = indice.source.filter((url) => url.includes('tr'))[0];
+            url = trURL;
+        }
+        try {
+            if (url.includes('crypto')) {
+                console.log('crypto', url);
+                const data = await (0, getCryptoNews_1.GetCryptoNews)(url);
+                const result = await (0, createNews_1.CreateNews)(data, indice.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
+            }
+            else {
+                console.log('currencies', url);
+                const data = await (0, getNews_1.GetNews)(url);
+                const result = await (0, createNews_1.CreateNews)(data, indice.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
+            }
+            const news = await this.newsRepo
+                .createQueryBuilder('news')
+                .where('news.lookupId =:lookupId', { lookupId: firstLookup[0].id })
+                .getMany();
+            this.newsRepo.remove(news);
+            this.lookupRepo.remove(firstLookup[0]);
+            return true;
+        }
+        catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
 };
+__decorate([
+    (0, schedule_1.Cron)(dist_1.CronExpression.EVERY_10_MINUTES),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PuppeteerService.prototype, "cronJob", null);
 PuppeteerService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(lookup_entinty_1.Lookup)),
