@@ -27,6 +27,10 @@ __decorate([
     __metadata("design:type", String)
 ], Indice.prototype, "alias", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'simple-array', nullable: true }),
+    __metadata("design:type", Array)
+], Indice.prototype, "source", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => lookup_entinty_1.Lookup, (lookup) => lookup.indice),
     __metadata("design:type", Array)
 ], Indice.prototype, "lookup", void 0);

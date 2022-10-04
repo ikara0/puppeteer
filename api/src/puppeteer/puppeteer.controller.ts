@@ -11,20 +11,8 @@ export class PuppeteerController {
     return this.pptService.getNewsByAlias(alias, lang);
   }
 
-  @Post('news/currencies/:alias')
-  createNewsByAliasAndLangForCurrencies(
-    @Param('alias') alias: string,
-    @Query('lang') lang: string,
-  ) {
-    return this.pptService.createNewsByAliasAndLang(alias, lang);
-  }
-
-  @Post('news/crypto/create')
-  createNewsByAliasAndLangForCrypto() {
-    return this.pptService.createNewsForCrypto();
-  }
-  @Post('refresh/news/currencies')
-  refreshCurrencies() {
-    return this.pptService.refreshCurrenciesNews();
+  @Post('refresh/news')
+  refreshDb() {
+    return this.pptService.refreshDb();
   }
 }

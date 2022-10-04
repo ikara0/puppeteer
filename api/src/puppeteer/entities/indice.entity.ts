@@ -12,6 +12,9 @@ export class Indice {
   @Column({ nullable: true })
   alias?: string;
 
+  @Column({ type: 'simple-array', nullable: true })
+  source?: string[];
+
   @OneToMany(() => Lookup, (lookup) => lookup.indice)
   lookup: Lookup[];
 }

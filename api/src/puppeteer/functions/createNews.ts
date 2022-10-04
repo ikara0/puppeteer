@@ -4,7 +4,7 @@ import { Indice } from '../entities/indice.entity';
 import { Lookup } from '../entities/lookup.entinty';
 import { News } from '../entities/news.entity';
 
-export async function CreateCurrencieNews(
+export async function CreateNews(
   data: any,
   alias: string,
   indiceRepo: Repository<any>,
@@ -39,11 +39,10 @@ export async function CreateCurrencieNews(
       }
       return true;
     }
-    const newAlias: string = data.indiceName.split(' ')[0];
-    const index = new Indice();
-    index.name = data.indiceName;
-    index.alias = newAlias.toLocaleLowerCase();
-    const indiceResult = indiceRepo.create(index);
+    const indice = new Indice();
+    indice.name = data.indiceName;
+    indice.alias = alias;
+    const indiceResult = indiceRepo.create(indice);
     await indiceRepo.save(indiceResult);
     console.log('index kaydedildi');
 

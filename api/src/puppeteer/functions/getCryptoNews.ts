@@ -8,7 +8,7 @@ export async function GetCryptoNews(url: string) {
     await page.goto(url, { waitUntil: 'networkidle2' });
     const value = await page.evaluate(async () => {
       let data: any = {};
-      data.indexName = $('#fullColumn h1').first().text().replace('\t', '');
+      data.indiceName = $('#fullColumn h1').first().text().replace('\t', '');
       data.lang = document.documentElement.lang;
       data.news = [];
       const result = $('.js-news-items .articleItem').map((i, el: any) => {
@@ -51,7 +51,7 @@ export async function GetCryptoNews(url: string) {
             .get();
           return totalParag;
         });
-        news[i].totalNews = total;
+        news[i].content = total;
       }
     }
     console.log('Total Handled');

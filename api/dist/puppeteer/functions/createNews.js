@@ -32,11 +32,10 @@ async function CreateNews(data, alias, indiceRepo, newsRepo, lookupRepo) {
             }
             return true;
         }
-        const newAlias = data.indiceName.split(' ')[0];
-        const index = new indice_entity_1.Indice();
-        index.name = data.indiceName;
-        index.alias = newAlias.toLocaleLowerCase();
-        const indiceResult = indiceRepo.create(index);
+        const indice = new indice_entity_1.Indice();
+        indice.name = data.indiceName;
+        indice.alias = alias;
+        const indiceResult = indiceRepo.create(indice);
         await indiceRepo.save(indiceResult);
         console.log('index kaydedildi');
         const lookup = new lookup_entinty_1.Lookup();
@@ -73,4 +72,4 @@ async function base(url) {
     return last;
 }
 exports.base = base;
-//# sourceMappingURL=createCurrencieNews.js.map
+//# sourceMappingURL=createNews.js.map
