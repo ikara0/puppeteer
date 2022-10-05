@@ -29,8 +29,8 @@ export async function SeedIndice(indiceRepo: Repository<Indice>) {
         name: 'GBP/TRY - British Pound Turkish Lira',
         alias: 'gbpTry',
         source: [
-          'https://www.investing.com/currencies/gbp-try',
-          'https://tr.investing.com/currencies/gbp-try',
+          'https://www.investing.com/currencies/gbp-try-news',
+          'https://tr.investing.com/currencies/gbp-try-news',
         ],
         fetchedAt: '2022-10-05 11:33:51.797+03',
       },
