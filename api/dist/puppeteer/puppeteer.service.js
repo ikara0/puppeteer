@@ -40,17 +40,14 @@ let PuppeteerService = class PuppeteerService {
             select: ['id', 'alias', 'source', 'fetchedAt'],
         });
         const fetched = firstEntity[0];
-        console.log(fetched);
         const result = fetched.source.map(async (item) => {
             if (item.includes('crypto')) {
                 const data = await (0, getCryptoNews_1.GetCryptoNews)(item);
                 const creat = await (0, createNews_1.CreateNews)(data, fetched.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
-                console.log(data);
             }
             else {
                 const data = await (0, getNews_1.GetNews)(item);
                 const create = await (0, createNews_1.CreateNews)(data, fetched.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
-                console.log(data);
             }
         });
         fetched.fetchedAt = new Date();
@@ -62,22 +59,17 @@ let PuppeteerService = class PuppeteerService {
         if (!indice) {
             return null;
         }
-        console.log('indice bulundu');
-        console.log(indice);
         const lookup = await this.lookupRepo
             .createQueryBuilder('lookup')
             .where('lookup.indiceId =:indiceId', { indiceId: indice.id })
             .andWhere('lookup.language =:language', { language: lang })
             .orderBy('lookup.timeStamp', 'DESC')
             .getOne();
-        console.log('lookup bulundu');
-        console.log(lookup);
         const news = await this.newsRepo
             .createQueryBuilder('news')
             .where('news.lookupId =:lookupId', { lookupId: lookup.id })
             .orderBy('news.order', 'ASC')
             .getMany();
-        console.log('news bulundu');
         const result = {
             indiceName: indice.name,
             time: lookup.timeStamp,

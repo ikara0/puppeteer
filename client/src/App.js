@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import News from "./News";
 
@@ -8,17 +7,7 @@ function App() {
   function handle(id) {
     setAlias(id);
   }
-  const refresh = async () => {
-    const isRefreshed = await axios
-      .post(`http://localhost:3000/puppeteer/news/${alias}?lang=${lang}`)
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    return isRefreshed;
-  };
+
   return (
     <div className="ui container">
       <div>
@@ -68,6 +57,17 @@ function App() {
         </button>
         <button onClick={() => handle("xagUsd")} className="ui primary button">
           XAG/USD
+        </button>
+      </div>
+      <div style={{ marginTop: "5px", display: "flex" }}>
+        <button onClick={() => handle("usdTry")} className="ui primary button">
+          USD/TRY
+        </button>
+        <button onClick={() => handle("eurTry")} className="ui primary button">
+          EUR/TRY
+        </button>
+        <button onClick={() => handle("gbpTry")} className="ui primary button">
+          GBP/TRY
         </button>
       </div>
       <div style={{ marginTop: "5px", display: "flex" }}>

@@ -20,7 +20,6 @@ let PuppeteerController = class PuppeteerController {
         this.pptService = pptService;
     }
     getNewsByAlias(alias, lang) {
-        console.log(alias, lang);
         return this.pptService.getNewsByAlias(alias, lang);
     }
     async refreshDb() {
