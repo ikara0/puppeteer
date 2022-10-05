@@ -33,6 +33,7 @@ export async function CreateNews(
         news.spot = item.spot;
         news.content = item.content;
         news.order = item.order;
+        news.dateTime = item.dateTime;
 
         const newsResult = newsRepo.create(news);
         await newsRepo.save(newsResult);
@@ -64,6 +65,7 @@ export async function CreateNews(
       news.spot = item.spot;
       news.content = item.content;
       news.order = item.order;
+      news.dateTime = item.dateTime;
 
       const newsResult = newsRepo.create(news);
       await newsRepo.save(newsResult);

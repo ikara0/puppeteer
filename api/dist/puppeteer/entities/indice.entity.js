@@ -31,6 +31,10 @@ __decorate([
     __metadata("design:type", Array)
 ], Indice.prototype, "source", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
+    __metadata("design:type", Date)
+], Indice.prototype, "fetchedAt", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => lookup_entinty_1.Lookup, (lookup) => lookup.indice),
     __metadata("design:type", Array)
 ], Indice.prototype, "lookup", void 0);

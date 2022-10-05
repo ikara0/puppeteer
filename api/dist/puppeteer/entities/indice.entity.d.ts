@@ -4,5 +4,6 @@ export declare class Indice {
     name: string;
     alias?: string;
     source?: string[];
+    fetchedAt?: Date;
     lookup: Lookup[];
 }

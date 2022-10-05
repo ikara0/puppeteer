@@ -59,6 +59,23 @@ export async function GetNews(url: string) {
           return totalParag;
         });
         news[i].content = total;
+
+        const date = await page.evaluate(async () => {
+          let pureTime = [];
+          const time = $('.contentSectionDetails')
+            .map((i, el: any) => {
+              let value = el.children[2].innerText;
+              let exist = value.indexOf('(');
+              if (exist !== -1) {
+                pureTime.push(value.slice(exist + 1, -1));
+              } else {
+                pureTime.push(value);
+              }
+            })
+            .get();
+          return pureTime;
+        });
+        news[i].dateTime = date[0];
       }
     }
     console.log('Total Handled');

@@ -15,6 +15,9 @@ export class Indice {
   @Column({ type: 'simple-array', nullable: true })
   source?: string[];
 
+  @Column({ type: 'timestamptz', nullable: true })
+  fetchedAt?: Date;
+
   @OneToMany(() => Lookup, (lookup) => lookup.indice)
   lookup: Lookup[];
 }

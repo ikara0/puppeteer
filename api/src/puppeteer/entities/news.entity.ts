@@ -21,6 +21,9 @@ export class News {
   @Column()
   order: number;
 
+  @Column({ nullable: true })
+  dateTime: string;
+
   @ManyToOne(() => Lookup, (lookup) => lookup.news)
   lookup: Lookup;
 }

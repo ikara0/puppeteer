@@ -31,9 +31,6 @@ function App() {
           <option value="en">English</option>
           <option value="tr">Türkçe</option>
         </select>
-        <button onClick={() => refresh()} className="ui button">
-          Refresh
-        </button>
       </div>
       <div style={{ marginTop: "5px", display: "flex" }}>
         <button onClick={() => handle("apple")} className="ui primary button">

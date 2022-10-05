@@ -26,6 +26,7 @@ async function CreateNews(data, alias, indiceRepo, newsRepo, lookupRepo) {
                 news.spot = item.spot;
                 news.content = item.content;
                 news.order = item.order;
+                news.dateTime = item.dateTime;
                 const newsResult = newsRepo.create(news);
                 await newsRepo.save(newsResult);
                 console.log('news saved');
@@ -54,6 +55,7 @@ async function CreateNews(data, alias, indiceRepo, newsRepo, lookupRepo) {
             news.spot = item.spot;
             news.content = item.content;
             news.order = item.order;
+            news.dateTime = item.dateTime;
             const newsResult = newsRepo.create(news);
             await newsRepo.save(newsResult);
             console.log('news saved');

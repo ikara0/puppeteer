@@ -39,6 +39,10 @@ __decorate([
     __metadata("design:type", Number)
 ], News.prototype, "order", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], News.prototype, "dateTime", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => lookup_entinty_1.Lookup, (lookup) => lookup.news),
     __metadata("design:type", lookup_entinty_1.Lookup)
 ], News.prototype, "lookup", void 0);

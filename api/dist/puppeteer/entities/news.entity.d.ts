@@ -6,5 +6,6 @@ export declare class News {
     content: string;
     sumImgURL: string;
     order: number;
+    dateTime: string;
     lookup: Lookup;
 }
