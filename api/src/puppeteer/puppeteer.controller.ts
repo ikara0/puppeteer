@@ -15,4 +15,9 @@ export class PuppeteerController {
   async refreshDb(): Promise<any> {
     return await this.pptService.refreshDb();
   }
+
+  @Post('/first')
+  seedIndice() {
+    this.pptService.seedIndice();
+  }
 }

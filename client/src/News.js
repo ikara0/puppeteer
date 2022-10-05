@@ -58,6 +58,7 @@ const News = ({ alias, lang }) => {
             </div>
           </Accordion.Title>
           <Accordion.Title>
+            <i>{item.dateTime}</i>
             <p>{item.spot.replace("Inversting.com", " ")}</p>
           </Accordion.Title>
           <Accordion.Content active={state === i}>

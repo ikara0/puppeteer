@@ -9,7 +9,8 @@ import { CreateNews } from './functions/createNews';
 import { GetCryptoNews } from './functions/getCryptoNews';
 
 import { GetNews } from './functions/getNews';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { SeedIndice } from './functions/seedIndice';
 
 @Injectable()
 export class PuppeteerService {
@@ -18,7 +19,13 @@ export class PuppeteerService {
     @InjectRepository(Indice) private indiceRepo: Repository<Indice>,
     @InjectRepository(News) private newsRepo: Repository<News>,
   ) {}
-  @Cron('0 */2 * * * *')
+
+  async seedIndice() {
+    const result = SeedIndice(this.indiceRepo);
+    return result;
+  }
+
+  @Cron(CronExpression.EVERY_10_MINUTES)
   async refreshDb() {
     const firstEntity = await this.indiceRepo.find({
       order: { fetchedAt: 'ASC' },
@@ -87,57 +94,4 @@ export class PuppeteerService {
     };
     return result;
   }
-  // @Cron(CronExpression.EVERY_10_MINUTES)
-  // async cronJob() {
-  //   console.log('Cron Running');
-  //   const firstLookup = await this.lookupRepo.find({
-  //     order: { timeStamp: 'ASC' },
-  //     relations: {
-  //       indice: true,
-  //     },
-  //     select: ['id', 'timeStamp', 'language', 'indice'],
-  //   });
-  //   let url: string;
-  //   const { indice } = firstLookup[0];
-  //   if (firstLookup[0].language === 'en') {
-  //     const enURL = indice.source.filter((url) => url.includes('www'))[0];
-  //     url = enURL;
-  //   } else {
-  //     const trURL = indice.source.filter((url) => url.includes('tr'))[0];
-  //     url = trURL;
-  //   }
-  //   try {
-  //     if (url.includes('crypto')) {
-  //       console.log('crypto', url);
-  //       const data = await GetCryptoNews(url);
-  //       const result = await CreateNews(
-  //         data,
-  //         indice.alias,
-  //         this.indiceRepo,
-  //         this.newsRepo,
-  //         this.lookupRepo,
-  //       );
-  //     } else {
-  //       console.log('currencies', url);
-  //       const data = await GetNews(url);
-  //       const result = await CreateNews(
-  //         data,
-  //         indice.alias,
-  //         this.indiceRepo,
-  //         this.newsRepo,
-  //         this.lookupRepo,
-  //       );
-  //     }
-  //     const news = await this.newsRepo
-  //       .createQueryBuilder('news')
-  //       .where('news.lookupId =:lookupId', { lookupId: firstLookup[0].id })
-  //       .getMany();
-  //     this.newsRepo.remove(news);
-  //     this.lookupRepo.remove(firstLookup[0]);
-  //     return true;
-  //   } catch (error) {
-  //     console.log(error);
-  //     return false;
-  //   }
-  // }
 }

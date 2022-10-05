@@ -23,11 +23,16 @@ const createNews_1 = require("./functions/createNews");
 const getCryptoNews_1 = require("./functions/getCryptoNews");
 const getNews_1 = require("./functions/getNews");
 const schedule_1 = require("@nestjs/schedule");
+const seedIndice_1 = require("./functions/seedIndice");
 let PuppeteerService = class PuppeteerService {
     constructor(lookupRepo, indiceRepo, newsRepo) {
         this.lookupRepo = lookupRepo;
         this.indiceRepo = indiceRepo;
         this.newsRepo = newsRepo;
+    }
+    async seedIndice() {
+        const result = (0, seedIndice_1.SeedIndice)(this.indiceRepo);
+        return result;
     }
     async refreshDb() {
         const firstEntity = await this.indiceRepo.find({
@@ -83,7 +88,7 @@ let PuppeteerService = class PuppeteerService {
     }
 };
 __decorate([
-    (0, schedule_1.Cron)('0 */2 * * * *'),
+    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_10_MINUTES),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

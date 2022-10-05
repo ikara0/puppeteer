@@ -26,6 +26,9 @@ let PuppeteerController = class PuppeteerController {
     async refreshDb() {
         return await this.pptService.refreshDb();
     }
+    seedIndice() {
+        this.pptService.seedIndice();
+    }
 };
 __decorate([
     (0, common_1.Get)('/news/:alias'),
@@ -41,6 +44,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PuppeteerController.prototype, "refreshDb", null);
+__decorate([
+    (0, common_1.Post)('/first'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], PuppeteerController.prototype, "seedIndice", null);
 PuppeteerController = __decorate([
     (0, common_1.Controller)('puppeteer'),
     __metadata("design:paramtypes", [puppeteer_service_1.PuppeteerService])
