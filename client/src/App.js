@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import News from "./News";
 import Indice from "./Indice";
 
+import "./css/style.css";
+
 function App() {
   const [alias, setAlias] = useState("apple");
   const [lang, setLanguage] = useState("en");
@@ -13,7 +15,6 @@ function App() {
     <div className="ui container">
       <div>
         <select
-          style={{ marginLeft: "90%" }}
           className="ui dropdown"
           value={lang}
           onChange={(e) => setLanguage(e.target.value)}

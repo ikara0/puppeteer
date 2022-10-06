@@ -10,12 +10,6 @@ export class PuppeteerController {
   getNewsByAlias(@Param('alias') alias: string, @Query('lang') lang: string) {
     return this.pptService.getNewsByAlias(alias, lang);
   }
-
-  @Post('/create/news')
-  async refreshDb(): Promise<any> {
-    return await this.pptService.refreshDb();
-  }
-
   //use this request for set data to empty database only.
   @Post('/first')
   async seedIndice() {

@@ -24,7 +24,6 @@ const Indice = ({ handleClick }) => {
       return (
         <button
           onClick={(event) => handleClick(event, item.alias)}
-          style={{ margin: "3px" }}
           className="ui primary button"
         >
           {item.name}
@@ -33,11 +32,7 @@ const Indice = ({ handleClick }) => {
     });
     return data;
   }
-  return (
-    <div style={{ marginTop: "5px", display: "-ms-inline-flexbox" }}>
-      {renderButton(indice)}
-    </div>
-  );
+  return <div className="buttonPlace">{renderButton(indice)}</div>;
 };
 
 export default Indice;

@@ -36,21 +36,10 @@ const News = ({ alias, lang }) => {
         <br />
       </div>
       {data?.news?.map((item, i) => (
-        <div
-          key={item.id}
-          style={{ borderBottom: "1px solid #ddd", marginBottom: "10px" }}
-        >
+        <div className="accordionTitle" key={item.id}>
           <Accordion.Title active={state === i} index={i} onClick={handleClick}>
-            <div style={{ display: "flex" }}>
-              <img
-                src={item.sumImgURL}
-                style={{
-                  maxWidth: "80px",
-                  padding: "5px",
-                  boxShadow: "0px 0px 3px #000",
-                }}
-                alt=""
-              />
+            <div className="accordionInnerTitle">
+              <img className="accordionImg" src={item.sumImgURL} alt="" />
               <h4>
                 <Icon name="dropdown" />
                 {item.title}

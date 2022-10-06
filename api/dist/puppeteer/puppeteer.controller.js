@@ -22,9 +22,6 @@ let PuppeteerController = class PuppeteerController {
     getNewsByAlias(alias, lang) {
         return this.pptService.getNewsByAlias(alias, lang);
     }
-    async refreshDb() {
-        return await this.pptService.refreshDb();
-    }
     async seedIndice() {
         return await this.pptService.seedIndice();
     }
@@ -40,12 +37,6 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], PuppeteerController.prototype, "getNewsByAlias", null);
-__decorate([
-    (0, common_1.Post)('/create/news'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], PuppeteerController.prototype, "refreshDb", null);
 __decorate([
     (0, common_1.Post)('/first'),
     __metadata("design:type", Function),
