@@ -1,3 +1,4 @@
+import { Indice } from './entities/indice.entity';
 import { PuppeteerService } from './puppeteer.service';
 export declare class PuppeteerController {
     private pptService;
@@ -5,4 +6,5 @@ export declare class PuppeteerController {
     getNewsByAlias(alias: string, lang: string): Promise<any>;
     refreshDb(): Promise<any>;
     seedIndice(): void;
+    getIndice(): Promise<Indice[]>;
 }

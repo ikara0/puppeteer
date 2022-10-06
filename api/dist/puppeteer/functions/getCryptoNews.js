@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetCryptoNews = void 0;
 const ppt = require("puppeteer");
 async function GetCryptoNews(url) {
-    console.log('Crypto News Loading..');
+    console.log('Crypto News Loading..', url);
     try {
         const browser = await ppt.launch();
         const page = await browser.newPage();

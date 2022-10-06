@@ -30,6 +30,12 @@ let PuppeteerService = class PuppeteerService {
         this.indiceRepo = indiceRepo;
         this.newsRepo = newsRepo;
     }
+    getIndice() {
+        const result = this.indiceRepo.find({
+            select: ['id', 'alias', 'name'],
+        });
+        return result;
+    }
     async seedIndice() {
         const result = (0, seedIndice_1.SeedIndice)(this.indiceRepo);
         return result;
@@ -50,8 +56,6 @@ let PuppeteerService = class PuppeteerService {
                 const create = await (0, createNews_1.CreateNews)(data, fetched.alias, this.indiceRepo, this.newsRepo, this.lookupRepo);
             }
         });
-        fetched.fetchedAt = new Date();
-        await this.indiceRepo.save(fetched);
         return fetched;
     }
     async getNewsByAlias(alias, lang) {
@@ -80,7 +84,7 @@ let PuppeteerService = class PuppeteerService {
     }
 };
 __decorate([
-    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_10_MINUTES),
+    (0, schedule_1.Cron)('0 */2 * * * *'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

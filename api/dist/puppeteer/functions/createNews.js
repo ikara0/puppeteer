@@ -31,11 +31,14 @@ async function CreateNews(data, alias, indiceRepo, newsRepo, lookupRepo) {
                 await newsRepo.save(newsResult);
                 console.log('news saved');
             }
+            exist.fetchedAt = new Date();
+            await indiceRepo.save(exist);
             return true;
         }
         const indice = new indice_entity_1.Indice();
         indice.name = data.indiceName;
         indice.alias = alias;
+        indice.fetchedAt = new Date();
         const indiceResult = indiceRepo.create(indice);
         await indiceRepo.save(indiceResult);
         console.log('index kaydedildi');

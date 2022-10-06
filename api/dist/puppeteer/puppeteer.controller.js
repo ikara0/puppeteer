@@ -28,6 +28,9 @@ let PuppeteerController = class PuppeteerController {
     seedIndice() {
         this.pptService.seedIndice();
     }
+    getIndice() {
+        return this.pptService.getIndice();
+    }
 };
 __decorate([
     (0, common_1.Get)('/news/:alias'),
@@ -49,6 +52,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PuppeteerController.prototype, "seedIndice", null);
+__decorate([
+    (0, common_1.Get)('/indice'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PuppeteerController.prototype, "getIndice", null);
 PuppeteerController = __decorate([
     (0, common_1.Controller)('puppeteer'),
     __metadata("design:paramtypes", [puppeteer_service_1.PuppeteerService])

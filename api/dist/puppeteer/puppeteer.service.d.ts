@@ -7,6 +7,7 @@ export declare class PuppeteerService {
     private indiceRepo;
     private newsRepo;
     constructor(lookupRepo: Repository<Lookup>, indiceRepo: Repository<Indice>, newsRepo: Repository<News>);
+    getIndice(): Promise<Indice[]>;
     seedIndice(): Promise<import("typeorm").InsertResult>;
     refreshDb(): Promise<Indice>;
     getNewsByAlias(alias: string, lang: string): Promise<any>;

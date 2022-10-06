@@ -1,7 +1,7 @@
 import * as ppt from 'puppeteer';
 
 export async function GetCryptoNews(url: string) {
-  console.log('Crypto News Loading..');
+  console.log('Crypto News Loading..', url);
   try {
     const browser = await ppt.launch();
     const page = await browser.newPage();

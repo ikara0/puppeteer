@@ -20,12 +20,19 @@ export class PuppeteerService {
     @InjectRepository(News) private newsRepo: Repository<News>,
   ) {}
 
+  getIndice(): Promise<Indice[]> {
+    const result = this.indiceRepo.find({
+      select: ['id', 'alias', 'name'],
+    });
+    return result;
+  }
+
   async seedIndice() {
     const result = SeedIndice(this.indiceRepo);
     return result;
   }
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron('0 */2 * * * *')
   async refreshDb() {
     const firstEntity = await this.indiceRepo.find({
       order: { fetchedAt: 'ASC' },
@@ -53,8 +60,6 @@ export class PuppeteerService {
         );
       }
     });
-    fetched.fetchedAt = new Date();
-    await this.indiceRepo.save(fetched);
     return fetched;
   }
   async getNewsByAlias(alias: string, lang: string) {

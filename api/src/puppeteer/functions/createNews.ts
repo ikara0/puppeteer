@@ -39,11 +39,14 @@ export async function CreateNews(
         await newsRepo.save(newsResult);
         console.log('news saved');
       }
+      exist.fetchedAt = new Date();
+      await indiceRepo.save(exist);
       return true;
     }
     const indice = new Indice();
     indice.name = data.indiceName;
     indice.alias = alias;
+    indice.fetchedAt = new Date();
     const indiceResult = indiceRepo.create(indice);
     await indiceRepo.save(indiceResult);
     console.log('index kaydedildi');
