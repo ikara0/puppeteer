@@ -7,7 +7,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
 
-  const server = await app.listen(3000);
-  server.setTimeout(300000);
+  await app.listen(3000);
 }
 bootstrap();

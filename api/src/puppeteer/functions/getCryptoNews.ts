@@ -31,7 +31,7 @@ export async function GetCryptoNews(url: string) {
     const { news } = value;
     if (news.length > 0) {
       for (let i = 0; i < news.length; i++) {
-        await page.goto(news[i].totalNewsLink, { waitUntil: 'networkidle2' });
+        await page.goto(news[i].totalNewsLink, { waitUntil: 'load',timeout : 0 });
         const total = await page.evaluate(async () => {
           let totalParag = [];
           const result = $(
