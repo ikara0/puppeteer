@@ -6,7 +6,7 @@ const indice_entity_1 = require("../entities/indice.entity");
 const lookup_entinty_1 = require("../entities/lookup.entinty");
 const news_entity_1 = require("../entities/news.entity");
 async function CreateNews(data, alias, indiceRepo, newsRepo, lookupRepo) {
-    if (!(data.news.length > 0)) {
+    if (!(data.news.length > 0) || !data) {
         return;
     }
     try {
