@@ -7,7 +7,7 @@ async function GetNews(url) {
     try {
         const browser = await ppt.launch();
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, { waitUntil: 'load', timeout: 0 });
         const value = await page.evaluate(async () => {
             let data = {};
             data.indiceName = $('.instrumentHead h1')
