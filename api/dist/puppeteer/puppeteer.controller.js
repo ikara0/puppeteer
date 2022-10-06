@@ -25,8 +25,8 @@ let PuppeteerController = class PuppeteerController {
     async refreshDb() {
         return await this.pptService.refreshDb();
     }
-    seedIndice() {
-        this.pptService.seedIndice();
+    async seedIndice() {
+        return await this.pptService.seedIndice();
     }
     getIndice() {
         return this.pptService.getIndice();
@@ -50,7 +50,7 @@ __decorate([
     (0, common_1.Post)('/first'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PuppeteerController.prototype, "seedIndice", null);
 __decorate([
     (0, common_1.Get)('/indice'),

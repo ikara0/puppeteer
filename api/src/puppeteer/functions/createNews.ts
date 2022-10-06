@@ -11,6 +11,9 @@ export async function CreateNews(
   newsRepo: Repository<any>,
   lookupRepo: Repository<any>,
 ) {
+  if (!(data.news.length > 0)) {
+    return;
+  }
   try {
     const exist = await indiceRepo.findOne({ where: { alias: alias } });
 

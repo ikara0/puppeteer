@@ -36,7 +36,7 @@ let PuppeteerService = class PuppeteerService {
         });
         return result;
     }
-    async seedIndice() {
+    seedIndice() {
         const result = (0, seedIndice_1.SeedIndice)(this.indiceRepo);
         return result;
     }

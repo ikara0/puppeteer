@@ -27,7 +27,7 @@ export class PuppeteerService {
     return result;
   }
 
-  async seedIndice() {
+  seedIndice() {
     const result = SeedIndice(this.indiceRepo);
     return result;
   }

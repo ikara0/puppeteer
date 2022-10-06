@@ -18,8 +18,8 @@ export class PuppeteerController {
 
   //use this request for set data to empty database only.
   @Post('/first')
-  seedIndice() {
-    this.pptService.seedIndice();
+  async seedIndice() {
+    return await this.pptService.seedIndice();
   }
   @Get('/indice')
   getIndice(): Promise<Indice[]> {
