@@ -7,7 +7,7 @@ async function GetCryptoNews(url) {
     try {
         const browser = await ppt.launch();
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'load', timeout: 0 });
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 0 });
         const value = await page.evaluate(async () => {
             let data = {};
             data.indiceName = $('#fullColumn h1').first().text().replace('\t', '');
@@ -31,7 +31,7 @@ async function GetCryptoNews(url) {
         if (news.length > 0) {
             for (let i = 0; i < news.length; i++) {
                 await page.goto(news[i].totalNewsLink, {
-                    waitUntil: 'load',
+                    waitUntil: 'networkidle2',
                     timeout: 0,
                 });
                 const total = await page.evaluate(async () => {
