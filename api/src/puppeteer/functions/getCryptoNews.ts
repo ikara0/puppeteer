@@ -1,3 +1,4 @@
+import e from 'express';
 import * as ppt from 'puppeteer';
 
 export async function GetCryptoNews(url: string) {
@@ -47,7 +48,10 @@ export async function GetCryptoNews(url: string) {
               if (el.innerText === 'Pozisyon başarıyla eklendi: \n') {
                 return;
               }
-              if (!el.innerText.includes('investing.com')) {
+              if (
+                !el.innerText.includes('investing.com') &&
+                !el.innerText.includes('Inversting')
+              ) {
                 totalParag.push(el.innerText.replace('Investing.com', ' '));
               }
             })

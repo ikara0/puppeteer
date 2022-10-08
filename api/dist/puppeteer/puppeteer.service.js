@@ -84,7 +84,7 @@ let PuppeteerService = class PuppeteerService {
     }
 };
 __decorate([
-    (0, schedule_1.Cron)('0 */2 * * * *'),
+    (0, schedule_1.Cron)('0 */5 * * * *'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

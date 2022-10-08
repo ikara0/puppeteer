@@ -44,7 +44,8 @@ async function GetCryptoNews(url) {
                         if (el.innerText === 'Pozisyon başarıyla eklendi: \n') {
                             return;
                         }
-                        if (!el.innerText.includes('investing.com')) {
+                        if (!el.innerText.includes('investing.com') &&
+                            !el.innerText.includes('Inversting')) {
                             totalParag.push(el.innerText.replace('Investing.com', ' '));
                         }
                     })
