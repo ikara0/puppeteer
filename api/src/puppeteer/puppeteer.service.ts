@@ -32,7 +32,7 @@ export class PuppeteerService {
     return result;
   }
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  // @Cron(CronExpression.EVERY_5_MINUTES)
   async refreshDb() {
     const firstEntity = await this.indiceRepo.find({
       order: { fetchedAt: 'ASC' },
