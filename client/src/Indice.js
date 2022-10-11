@@ -7,7 +7,7 @@ const Indice = ({ handleClick }) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios
-        .get("http://localhost:3000/puppeteer/indice")
+        .get("https://pacific-scrubland-93804.herokuapp.com/puppeteer/indice")
         .then((response) => {
           return response.data;
         })

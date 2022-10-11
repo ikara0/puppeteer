@@ -9,7 +9,7 @@ const News = ({ alias, lang }) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios
-        .get(`http://localhost:3000/puppeteer/news/${alias}?lang=${lang}`)
+        .get(`https://pacific-scrubland-93804.herokuapp.com/puppeteer/news/${alias}?lang=${lang}`)
         .then((response) => {
           if (response) {
             return response.data;
